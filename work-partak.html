@@ -760,6 +760,236 @@ body.intro-on .top{opacity:0}
 @media (hover:hover){.wr:hover{translate:0 -2px}.wr:hover .go{background-color:var(--s-bg-h)}}
 .wr:active{scale:.99}
 ::view-transition-group(*){animation-duration:.32s}
+/* services ↔ work */
+.svc-work{margin-top:16px}
+.svc-k{font-size:13px;font-weight:600;color:var(--mute);margin-bottom:8px}
+.svc-list{display:grid;gap:8px}
+@media (min-width:700px){.svc-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.block .wr.sw{background:var(--cream);min-height:64px;padding:10px 14px 10px 10px}
+.block .wr.sw b{font-size:16px}
+.svc-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.svc-chips a{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:4px 16px;border-radius:999px;background:var(--sand);font-size:15px;font-weight:600;transition:background-color .25s}
+.svc-chips a .mono{font-size:12px;color:var(--mute)}
+.svc-chips a:focus-visible{outline:2px solid rgba(var(--lit-c),.95);outline-offset:3px}
+@media (hover:hover){.svc-chips a:hover{background:var(--sand2)}}
+/* the journey strip: branch → how we work → conversation */
+.jr{margin-top:32px;padding:16px 18px;border-radius:var(--r);background:var(--sand)}
+.jr-k{font-size:13px;font-weight:600;color:var(--mute);margin-bottom:8px}
+.jr ol{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.jn{display:flex;align-items:center;gap:6px}
+.jn+.jn::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--line)}
+.jn a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:999px;background:var(--cream);font-size:15px;font-weight:600;transition:background-color .25s}
+.jn a::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--green)}
+.jn.on>a{background:var(--green);color:var(--cream)}
+.jn.on>a::before{background:var(--cream);box-shadow:none}
+.jn-set{display:inline-flex;flex-wrap:wrap;gap:4px}
+.jn.done a::before{background:var(--green);box-shadow:none}
+.jn a:focus-visible{outline:2px solid rgba(var(--lit-c),.95);outline-offset:3px}
+@media (hover:hover){.jn:not(.on) a:hover{background:#fff}}
+.jr+.vcta{margin-top:12px}
+/* about page */
+.block .lead-card{display:grid;grid-template-columns:1fr!important;gap:16px;padding:18px}
+.block .lead-card figure{align-items:center}
+.about-key{margin-top:10px}
+.about-key p+p{margin-top:8px}
+.who{margin-top:10px}
+
+/* ═════════ LAYOUT GUIDE v1 — buttons and the key visual. u = 8px; spacings are 1, 1.5, 2, 3, 6, 9 u ═════════ */
+
+/* buttons: 52px (48 in the header), radius 10, flat; no shadow, no gradient, no lit dot */
+.btn{min-height:52px;padding:0 24px;gap:8px;border-radius:10px;border:1px solid transparent;background-image:none;box-shadow:none;
+  -webkit-backdrop-filter:none;backdrop-filter:none;translate:none;transition:background-color .16s ease-out,border-color .16s ease-out,color .16s ease-out,scale .12s ease-out}
+.btn::before,.btn::after{display:none}
+.btn:hover,.btn:active,.btn[aria-current],.btn[aria-pressed="true"]{background-image:none;box-shadow:none;translate:none}
+.btn:active{scale:.98}
+.btn-sm{min-height:48px;padding:0 20px;font-size:15px}
+.btn:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+
+/* filled: the main path only (book a session · start a conversation · send) */
+.btn-primary{background-color:#006E62;border-color:#006E62;color:#F9F5EC}
+@media (hover:hover){.btn-primary:hover{background-color:#007E70;border-color:#007E70}}
+.btn-primary:active{background-color:#00564D;border-color:#00564D}
+
+/* outline: continue, call, see all */
+.btn:not(.btn-primary){background-color:transparent;border-color:rgba(20,22,21,.55);color:var(--ink)}
+@media (hover:hover){.btn:not(.btn-primary):hover{background-color:rgba(0,110,98,.06);border-color:var(--green);color:var(--green)}}
+.btn:not(.btn-primary):active{background-color:rgba(0,110,98,.1)}
+.on-dark .btn:not(.btn-primary),.vcta .btn:not(.btn-primary),.contact .btn:not(.btn-primary),.lab .btn:not(.btn-primary){background-color:transparent;border-color:rgba(249,245,236,.55);color:var(--cream)}
+@media (hover:hover){.on-dark .btn:not(.btn-primary):hover,.vcta .btn:not(.btn-primary):hover,.contact .btn:not(.btn-primary):hover,.lab .btn:not(.btn-primary):hover{background-color:rgba(249,245,236,.08);border-color:var(--cream);color:var(--cream)}}
+.on-dark .btn:focus-visible,.vcta .btn:focus-visible,.contact .btn:focus-visible,.lab .btn:focus-visible{outline-color:var(--teal-l)}
+
+/* glass: only the home hero's second button, the header and the bottom bar */
+.hero .actions .btn:not(.btn-primary),.hero[data-look="fresco"] .actions .btn:not(.btn-primary){background-color:rgba(249,245,236,.6);border-color:rgba(20,22,21,.16);color:var(--ink);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%)}
+@media (hover:hover){.hero .actions .btn:not(.btn-primary):hover{background-color:rgba(249,245,236,.85);border-color:var(--green);color:var(--green)}}
+.chip,.navpill,.bar-pill{background-color:rgba(249,245,236,.6);background-image:none;box-shadow:none;border:1px solid rgba(20,22,21,.1);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%)}
+.chip::before,.navpill::before,.bar-pill::before{display:none}
+.chip:hover,.chip:active{background-color:rgba(249,245,236,.85);background-image:none;box-shadow:none;translate:none;scale:1}
+.chip,.navpill{border-radius:14px}
+@media (min-width:1024px){.navpill{padding:0 4px;gap:4px}.navpill .cta{min-height:48px}}
+
+/* every other control that was glass is outline now (back link, filters, step arrows, close, contact ways, card arrows) */
+.glass{background-color:transparent;background-image:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid rgba(20,22,21,.3);translate:none}
+.glass::before{display:none}
+@media (hover:hover){.glass:hover{background-color:rgba(0,110,98,.06);background-image:none;border-color:var(--green);color:var(--green);box-shadow:none;translate:none}}
+.glass:active{background-color:rgba(0,110,98,.1);box-shadow:none}
+.glass[aria-pressed="true"],.glass.on{background-color:rgba(0,110,98,.1);border-color:var(--green);color:var(--green);box-shadow:none}
+.on-dark .glass,.lab .glass,.contact .glass,.vcta .glass{border-color:rgba(249,245,236,.32);color:var(--cream)}
+@media (hover:hover){.on-dark .glass:hover,.lab .glass:hover,.contact .glass:hover,.vcta .glass:hover{background-color:rgba(249,245,236,.08);border-color:var(--cream);color:var(--cream)}}
+.on-dark .glass[aria-pressed="true"],.lab .glass[aria-pressed="true"],.on-dark .glass.on,.lab .glass.on{background-color:rgba(54,224,200,.12);border-color:var(--teal-l);color:var(--cream)}
+.crumb,.gbtn,.fbtn{border-radius:10px}
+.path .go{border:1px solid rgba(20,22,21,.3)}
+@media (hover:hover){.path:hover .go{background-color:transparent;border-color:var(--green);color:var(--green)}}
+
+/* the hero pause: a quiet glass circle, never in the header row */
+.pause{background-color:rgba(249,245,236,.6);background-image:none;box-shadow:none;border:1px solid rgba(20,22,21,.16);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.pause::before{display:none}
+@media (hover:hover){.pause:hover{box-shadow:none;translate:none;background-color:rgba(249,245,236,.85)}}
+@media (max-width:859px){.pause{top:calc(var(--copyTop,80vh) - 56px);left:max(var(--pad),env(safe-area-inset-left))}}
+
+/* hero copy, vertical rhythm: kicker 12 · headline 16 · text 24 · buttons 12 · caption */
+.kicker{margin-bottom:12px}
+.hero .lead{margin-top:16px}
+.actions{flex-direction:column;gap:12px;margin-top:24px}
+.actions .btn{width:100%}
+.note{margin-top:12px}
+@media (min-width:641px){.actions{flex-direction:row;flex-wrap:wrap;gap:16px}.actions .btn{width:auto;min-width:120px}}
+@media (min-width:860px){.hero .kicker{margin-bottom:12px}.hero .lead{margin-top:16px}.hero .actions{gap:16px;margin-top:24px}.hero .actions .btn{padding:0 24px;gap:8px}}
+@media (max-width:859px) and (max-height:700px){.hero .lead{margin-top:8px}.actions{margin-top:16px}}
+@media (max-width:859px) and (max-height:620px){.kicker{margin-bottom:8px}.actions .btn:not(.btn-primary){min-height:48px}}
+
+/* continue: 32px after the section's content; full width on phones, sized to its text from 641px, from the right */
+.next-step{margin-top:32px;gap:12px;align-items:stretch}
+@media (min-width:641px){.next-step{flex-direction:row;align-items:center;justify-content:flex-start;gap:16px}}
+.vcta .row{gap:12px;margin-top:24px}
+@media (min-width:641px){.vcta .row{flex-direction:row;flex-wrap:wrap;gap:16px}}
+.form .btn{margin-top:24px}
+
+/* bottom bar: two equal 50px buttons, start a conversation (filled) on the right, call (outline) on the left */
+.bar-pill{gap:8px;padding:6px;border-radius:16px}
+.bar-pill .btn{flex:1 1 0;min-height:50px;padding:0 12px}
+
+/* menu sheet: a numbered line badge instead of the mark; filled on the right, call on the left */
+.bsheet .row{grid-template-columns:24px 1fr auto;gap:16px;padding:8px 8px}
+.bsheet .row .num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;border:1px solid rgba(20,22,21,.5);font-size:12px;font-weight:500;line-height:1;color:var(--ink)}
+.bsheet .row[aria-current] .num{border-color:var(--green);color:var(--green)}
+.bsheet .acts{gap:16px;margin-top:24px}
+.bsheet .acts .btn{min-height:52px}
+
+/* the "your path" steps are links inside a card: never filled; the current step is a green outline */
+.jn a{border-radius:10px;border:1px solid transparent}
+.jn.on>a{background:rgba(0,110,98,.08);border-color:var(--green);color:var(--green)}
+.jn.on>a::before{background:var(--green);box-shadow:none}
+
+/* engineering layer: a 6u ruler under every section heading, 1px ink at 35% */
+.eyebrow+h2::after{content:"";display:block;width:49px;height:6px;margin-top:16px;opacity:.35;pointer-events:none;
+  background:linear-gradient(currentColor,currentColor) left bottom/100% 1px no-repeat,repeating-linear-gradient(to left,currentColor 0 1px,transparent 1px 8px)}
+
+/* ═════════ BRAND GUIDE v2 — the logo stays a signature, results read as a result sheet, the key visual opens the inner pages ═════════ */
+
+/* the second button: green outline (glass only on the plaster of the home hero, the header and the bottom bar) */
+.btn:not(.btn-primary){border-color:var(--green);color:var(--green)}
+@media (hover:hover){.btn:not(.btn-primary):hover{background-color:rgba(0,110,98,.08);border-color:var(--green);color:var(--green)}}
+
+/* guide number: a 24px line circle with a Persian numeral */
+.gn{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;border:1px solid currentColor;font-size:12px;font-weight:600;line-height:1}
+
+/* services: one surface for all four; a guide number instead of a turned logo module */
+.cap,.cap.hl{background:var(--surface);color:var(--ink)}
+.cap.hl .mono{color:var(--mute)}
+.cap .gn{color:var(--green)}
+.cap.hl .gn{color:var(--green)}
+
+/* the three paths: line icons */
+.path .ic svg.li{width:24px;height:24px;fill:none;stroke:var(--green);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* "a network of specialists, one accountable lead": one small light point, not a logo collage */
+.model{display:flex;align-items:center;gap:12px}
+.model .spark{flex:none;width:10px;height:10px;margin-inline:4px;border-radius:50%;background:radial-gradient(circle,#FFFDF4 0%,#FFE7A8 45%,#D4AF37 100%);box-shadow:0 0 12px 5px rgba(255,205,110,.5),0 0 30px 12px rgba(255,220,150,.28)}
+
+/* message blocks are ink on the page surface, not green */
+.key{background:var(--surface);color:var(--ink);border:1px solid rgba(20,22,21,.12)}
+.key .mono{color:var(--mute)}
+.key p span{color:var(--mute)}
+.sec.sand .key{background:var(--cream)}
+
+/* project phases: the guide number is a line circle; open is a green line, never a filled disc */
+.pn,.phase[open] .pn{width:28px;height:28px;background:transparent;border:1px solid currentColor;font-size:12.5px;font-weight:600;color:var(--green)}
+.phase[open] .pn{background:rgba(0,110,98,.1)}
+
+/* the case-study card: the basis of its numbers, always beside them */
+.wm-k{display:block;margin-top:8px;font-size:12.5px;color:var(--mute)}
+
+/* ───── the result sheet ───── */
+.rsheet{display:flex;flex-direction:column;gap:16px;min-width:0}
+.rs-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;padding-bottom:12px;border-bottom:1px solid rgba(20,22,21,.55)}
+.rs-head b{font-size:15px;font-weight:700}
+.rs-head p:first-child{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.rs-head .mono{color:var(--mute)}
+.rs-key{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--ink2)}
+.rs-key span{display:inline-flex;align-items:center;gap:8px}
+.rs-key i{display:block;width:16px;height:6px;background:#A39E93}
+.rs-key i.k1{height:10px;background:var(--green)}
+.rs-rows{display:flex;flex-direction:column;gap:24px;margin:8px 0 0;padding:0;list-style:none}
+.rs-row{display:grid;gap:8px;min-width:0}
+@media (min-width:641px){.rs-row{grid-template-columns:minmax(150px,13em) minmax(0,1fr);gap:24px;align-items:start}}
+.rs-name{display:flex;align-items:flex-start;gap:8px}
+.rs-name .gn{margin-top:2px;color:var(--green)}
+.rs-name b{display:block;font-size:15px;font-weight:700;line-height:1.6}
+.rs-name small{display:block;font-size:12.5px;font-weight:500;color:var(--mute)}
+.rs-plot{position:relative;height:72px;
+  background-image:linear-gradient(to left,rgba(20,22,21,.06) 1px,transparent 1px),linear-gradient(rgba(20,22,21,.06) 1px,transparent 1px);background-size:8px 8px;background-position:right top}
+.rs-plot::before{content:"";position:absolute;right:0;top:0;height:40px;width:1px;background:var(--ink)}
+.rs-plot i{position:absolute;right:0;display:block;transform-origin:right center;transition:transform .7s var(--ease)}
+.rs-plot .rs-b0{top:6px;height:8px;width:var(--a);background:#A39E93}
+.rs-plot .rs-b1{top:18px;height:14px;width:var(--b);background:var(--green);transition-delay:.12s}
+.rs-m{position:absolute;top:40px;right:var(--lo);width:calc(var(--hi) - var(--lo));height:0;border-top:1px solid rgba(20,22,21,.6);transition:opacity .4s .6s}
+.rs-m::before,.rs-m::after{content:"";position:absolute;top:-28px;width:0;height:32px;border-right:1px dashed rgba(20,22,21,.45)}
+.rs-m::before{right:-1px}.rs-m::after{left:0}
+.rs-m em{position:absolute;top:6px;right:50%;translate:50% 0;font-style:normal;font-size:14px;font-weight:800;white-space:nowrap}
+.reveal-bars .rs-plot i{transform:scaleX(.02)}.reveal-bars .rs-m{opacity:0}
+.reveal-bars.in .rs-plot i{transform:none}.reveal-bars.in .rs-m{opacity:1}
+@media (prefers-reduced-motion:reduce){.reveal-bars .rs-plot i{transform:none}.reveal-bars .rs-m{opacity:1}}
+.rs-spec{display:grid;grid-template-columns:repeat(3,auto);margin:8px 0 0;border:1px solid rgba(20,22,21,.55);font-size:13px}
+.rs-spec div{display:flex;flex-wrap:wrap;gap:4px 8px;padding:8px 12px;min-width:0}
+.rs-spec div+div{border-inline-start:1px solid rgba(20,22,21,.55)}
+.rs-spec dt{color:var(--mute)}.rs-spec dd{margin:0;font-weight:700}
+@media (max-width:640px){.rs-spec{grid-template-columns:1fr}.rs-spec div+div{border-inline-start:0;border-top:1px solid rgba(20,22,21,.55)}}
+.rs-tab summary{display:inline-flex;align-items:center;min-height:44px;cursor:pointer;font-size:14px;font-weight:700;color:var(--green);list-style:none}
+.rs-tab summary::-webkit-details-marker{display:none}
+.rs-tab summary:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.rs-tab table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.rs-tab caption{caption-side:bottom;padding-top:8px;text-align:right;font-size:12.5px;color:var(--mute)}
+.rs-tab th,.rs-tab td{padding:8px;border-bottom:1px solid rgba(20,22,21,.15);text-align:right}
+.rs-tab thead th{font-size:12.5px;font-weight:600;color:var(--mute)}
+
+/* ───── key visual for the inner pages: plaster, the two hands, labels, a measured gap or one light point ───── */
+.pkv{--H:clamp(232px,26vw,340px);--yp:.5;--k:.82;--kw:1;--cr:128;position:relative;height:var(--H);margin:16px 0 24px;overflow:hidden;border-radius:var(--r);container-type:inline-size;color:var(--ink);
+  background:radial-gradient(ellipse at 50% -15%,rgba(255,224,150,.55),rgba(255,224,150,0) 62%),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .30  0 0 0 0 .24  0 0 0 .16 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>"),#EFE7D8;box-shadow:inset 0 0 0 1px rgba(20,22,21,.08)}
+.pkv>*{position:absolute;pointer-events:none}
+.pkv{--s:min(calc(var(--H) * var(--k) / 427),calc(100cqw * var(--kw) / 1388))}
+.pkv-near{--k:2.1;--kw:99;--cr:46}
+.pkv img{max-width:none;width:calc(2048 * var(--s));height:auto;top:calc(var(--H) * var(--yp) - 351 * var(--s));filter:drop-shadow(0 calc(14 * var(--s)) calc(18 * var(--s)) rgba(70,46,20,.26))}
+.pkv .kv-ai{left:calc(50cqw - (1023 + var(--g)) * var(--s))}
+.pkv .kv-hu{left:calc(50cqw - (1023 - var(--g)) * var(--s))}
+.pkv .kv-c{width:calc(2 * var(--cr) * var(--s));height:calc(2 * var(--cr) * var(--s));border-radius:50%;border:1px solid rgba(20,22,21,.34);translate:-50% -50%}
+.pkv .kv-c1{left:calc(50cqw - (22 + var(--g)) * var(--s));top:calc(var(--H) * var(--yp) - 5 * var(--s))}
+.pkv .kv-c2{left:calc(50cqw + (23 + var(--g)) * var(--s));top:calc(var(--H) * var(--yp) + 6 * var(--s))}
+.pkv .kv-m{left:calc(50cqw - (22 + var(--g)) * var(--s));width:calc((45 + 2 * var(--g)) * var(--s));top:calc(var(--H) * var(--yp) + max(var(--cr) * var(--s), 48px) + 10px);height:0;border-top:1px solid rgba(20,22,21,.45)}
+.pkv .kv-m::before,.pkv .kv-m::after{content:"";position:absolute;top:-4px;width:1px;height:9px;background:rgba(20,22,21,.45)}
+.pkv .kv-m::before{left:0}.pkv .kv-m::after{right:0}
+.pkv .kv-r{left:50cqw;translate:-50% 0;top:calc(var(--H) * var(--yp) + max(var(--cr) * var(--s), 48px) + 18px);font-family:var(--mono);font-size:11px;letter-spacing:.12em;direction:ltr;color:rgba(20,22,21,.55)}
+.pkv .kv-l{bottom:calc(var(--H) * (1 - var(--yp)) + max(var(--cr) * var(--s), 48px) + 10px);font-size:14px;font-weight:500;line-height:1.5}
+.pkv .kv-l i{display:block;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.12em;direction:ltr;color:rgba(20,22,21,.62)}
+.pkv .kv-l-ai{right:calc(50cqw + (22 + var(--g)) * var(--s) + 8px);text-align:right}
+.pkv .kv-l-ai i{text-align:right}
+.pkv .kv-l-hu{left:calc(50cqw + (23 + var(--g)) * var(--s) + 8px);text-align:left}
+.pkv .kv-spark{left:50cqw;top:calc(var(--H) * var(--yp));width:12px;height:12px;translate:-50% -50%;border-radius:50%;background:radial-gradient(circle,#FFFDF4 0%,#FFE7A8 45%,#D4AF37 100%);
+  box-shadow:0 0 17px 8px rgba(255,205,110,.55),0 0 48px 19px rgba(255,220,150,.35)}
+.pkv-near .kv-spark{width:16px;height:16px}
+.pkv .kv-tag{right:16px;top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;direction:ltr;color:rgba(20,22,21,.6)}
+@media (max-width:640px){.pkv{--H:236px;--yp:.54}.pkv-near{--k:1.7}.pkv .kv-l{font-size:13px}.pkv .kv-l i{font-size:10px;letter-spacing:.08em}}
 
 </style>
 </head>
@@ -771,7 +1001,7 @@ body.intro-on .top{opacity:0}
   <div class="wrap">
     <a class="chip" href="index.html#hero" aria-label="DOT’s، صفحه‌ی اصلی" translate="no"><svg viewBox="0 0 3 3" aria-hidden="true"><path d="M1 0H3V2A1 1 0 0 0 2 3H1A1 1 0 0 0 0 2V1A1 1 0 0 0 1 0Z"/></svg><span class="word">DOT’s</span></a>
     <nav class="navpill" aria-label="منوی اصلی">
-      <a class="navlink" href="capabilities.html">توانمندی‌ها</a><a class="navlink" href="work.html" aria-current="page">نمونه‌کار</a><a class="navlink" href="approach.html">روش کار</a>
+      <a class="navlink" href="capabilities.html">خدمات</a><a class="navlink" href="work.html" aria-current="page">نمونه‌کار</a><a class="navlink" href="about.html">درباره</a><a class="navlink" href="approach.html">روش کار</a>
       <button type="button" class="menu-toggle" id="menuBtn" aria-expanded="false" aria-controls="bsheet"><span class="bars" aria-hidden="true"></span>منو</button>
       <a class="btn btn-primary btn-sm cta" href="#contact">شروع گفت‌وگو</a>
     </nav>
@@ -781,10 +1011,10 @@ body.intro-on .top{opacity:0}
 <div class="bsheet" id="bsheet" role="dialog" aria-modal="true" aria-label="منو" hidden>
   <div class="grab" aria-hidden="true"></div>
   <div class="sh-title"><b>کجا برویم؟</b><button type="button" class="x glass" id="menuClose" aria-label="بستن منو">×</button></div>
-  <a class="row" href="capabilities.html"><span class="ic"><svg viewBox="0 0 3 3" aria-hidden="true"><path class="mod" transform="rotate(0 1.5 1.5)" d="M1 0H3V2A1 1 0 0 0 2 3H1A1 1 0 0 0 0 2V1A1 1 0 0 0 1 0Z"/></svg></span><span><b>توانمندی‌ها</b><small>WHAT WE DO</small></span><span class="chev" aria-hidden="true">←</span></a><a class="row" href="work.html" aria-current="page"><span class="ic"><svg viewBox="0 0 3 3" aria-hidden="true"><path class="mod" transform="rotate(90 1.5 1.5)" d="M1 0H3V2A1 1 0 0 0 2 3H1A1 1 0 0 0 0 2V1A1 1 0 0 0 1 0Z"/></svg></span><span><b>نمونه‌کار</b><small>OUR WORK</small></span><span class="chev" aria-hidden="true">←</span></a><a class="row" href="approach.html"><span class="ic"><svg viewBox="0 0 3 3" aria-hidden="true"><path class="mod" transform="rotate(180 1.5 1.5)" d="M1 0H3V2A1 1 0 0 0 2 3H1A1 1 0 0 0 0 2V1A1 1 0 0 0 1 0Z"/></svg></span><span><b>روش کار</b><small>HOW WE WORK</small></span><span class="chev" aria-hidden="true">←</span></a><a class="row" href="#contact"><span class="ic"><svg viewBox="0 0 3 3" aria-hidden="true"><path class="mod" transform="rotate(270 1.5 1.5)" d="M1 0H3V2A1 1 0 0 0 2 3H1A1 1 0 0 0 0 2V1A1 1 0 0 0 1 0Z"/></svg></span><span><b>تماس</b><small>CONTACT</small></span><span class="chev" aria-hidden="true">←</span></a>
-  <div class="acts"><a class="btn" href="tel:+989132289608">تماس تلفنی</a><a class="btn btn-primary" href="#contact">شروع گفت‌وگو</a></div>
+  <a class="row" href="capabilities.html"><span class="num" aria-hidden="true">۰۱</span><span><b>خدمات</b><small>WHAT WE DO</small></span><span class="chev" aria-hidden="true">←</span></a><a class="row" href="work.html" aria-current="page"><span class="num" aria-hidden="true">۰۲</span><span><b>نمونه‌کار</b><small>OUR WORK</small></span><span class="chev" aria-hidden="true">←</span></a><a class="row" href="about.html"><span class="num" aria-hidden="true">۰۳</span><span><b>درباره</b><small>ABOUT</small></span><span class="chev" aria-hidden="true">←</span></a><a class="row" href="approach.html"><span class="num" aria-hidden="true">۰۴</span><span><b>روش کار</b><small>HOW WE WORK</small></span><span class="chev" aria-hidden="true">←</span></a><a class="row" href="#contact"><span class="num" aria-hidden="true">۰۵</span><span><b>تماس</b><small>CONTACT</small></span><span class="chev" aria-hidden="true">←</span></a>
+  <div class="acts"><a class="btn btn-primary" href="#contact">شروع گفت‌وگو</a><a class="btn" href="tel:+989132289608">تماس تلفنی</a></div>
 </div>
-<div class="bar-pill" id="mbar" role="region" aria-label="اقدام سریع"><a class="btn" href="tel:+989132289608">تماس تلفنی</a><a class="btn btn-primary" href="#contact">شروع گفت‌وگو</a></div>
+<div class="bar-pill" id="mbar" role="region" aria-label="اقدام سریع"><a class="btn btn-primary" href="#contact">شروع گفت‌وگو</a><a class="btn" href="tel:+989132289608">تماس تلفنی</a></div>
 
 <main id="main">
 <div class="page" id="p-work">
@@ -801,19 +1031,22 @@ body.intro-on .top{opacity:0}
     <h2 class="wsec-h rv">مسیر پروژه <span class="mono">Strategy & execution · 4 phases</span></h2>
     <ol class="phases"><li><details class="phase" open><summary><span class="pn">۰۱</span><span class="pt"><b>زیرساخت دیجیتال</b><span class="mono">Digital infrastructure</span></span><span class="pm" aria-hidden="true"></span></summary><ul><li>بررسی وضعیت وب‌سایت</li><li>بهینه‌سازی ساختار فروشگاه</li><li>بهبود تجربه‌ی خرید</li><li>زیرساخت لازم برای فروش آنلاین</li></ul></details></li><li><details class="phase"><summary><span class="pn">۰۲</span><span class="pt"><b>سئو و رشد ارگانیک</b><span class="mono">SEO & organic growth</span></span><span class="pm" aria-hidden="true"></span></summary><ul><li>تحقیق کلمات کلیدی</li><li>ساختار محتوایی</li><li>بهینه‌سازی صفحه‌های محصول</li><li>بهبود رتبه و ورودی ارگانیک</li></ul></details></li><li><details class="phase"><summary><span class="pn">۰۳</span><span class="pt"><b>کانال‌های فروش</b><span class="mono">Sales channels</span></span><span class="pm" aria-hidden="true"></span></summary><ul><li>توسعه‌ی کانال‌های ارتباطی</li><li>اتصال مسیرهای بازاریابی به فروشگاه</li><li>بهبود مسیر خرید مشتری</li><li>طراحی فعالیت‌های تبلیغاتی</li></ul></details></li><li><details class="phase"><summary><span class="pn">۰۴</span><span class="pt"><b>نرخ تبدیل و عملکرد</b><span class="mono">Conversion & performance</span><span class="st st-live">ادامه‌دار</span></span><span class="pm" aria-hidden="true"></span></summary><ul><li>بهینه‌سازی نرخ تبدیل</li><li>تحلیل رفتار کاربران</li><li>یافتن نقطه‌های ریزش قیف فروش</li><li>بهبود صفحه‌های محصول</li><li>بهینه‌سازی فرایند خرید</li></ul></details></li></ol>
     <div class="cs-rows"><div class="rv pend"><span class="k">نتایج <span class="mono">Results</span></span><p>نتایج در حال ثبت است؛ این مطالعه‌ی موردی با هر نتیجه‌ی تازه کامل می‌شود.</p></div></div>
+    <h2 class="wsec-h rv">خدمات این کار <span class="mono">Services used</span></h2>
+    <ul class="svc-chips" aria-label="خدمات این کار"><li><a href="capabilities.html#s1">استراتژی و مشاوره<span class="mono">Strategy & Consulting</span></a></li><li><a href="capabilities.html#s2">پرفورمنس و رشد<span class="mono">Performance & Growth</span></a></li><li><a href="capabilities.html#s3">داده و تحلیل<span class="mono">Data & Analytics</span></a></li></ul>
     <h2 class="wsec-h rv">پروژه‌های مرتبط <span class="mono">Connected work</span></h2>
     <div class="wrel"><a class="wr" href="work-bfyalda.html"><span class="t"><span class="mono">04 · Campaign showcase</span><b>از بلک‌فرایدی تا یلدا</b></span><span class="go glass" aria-hidden="true">←</span></a></div>
-    <div class="vcta on-dark"><p>پروژه‌ای شبیه این دارید؟ <span>در جلسه‌ی اول بگویید فروشتان کجا گیر کرده است.</span></p><div class="row"><a class="btn btn-primary" href="#contact">شروع گفت‌وگو</a><a class="btn" href="work.html">همه‌ی نمونه‌کارها <span class="arr" aria-hidden="true">←</span></a></div></div>
+    <nav class="jr rv" aria-label="مسیر شما در سایت"><p class="jr-k">مسیر شما</p><ol><li class="jn on"><a href="work.html">نمونه‌کار</a></li><li class="jn"><a href="approach.html">روش کار</a></li><li class="jn"><a href="#contact">گفت‌وگو</a></li></ol></nav>
+    <div class="vcta on-dark"><p>پروژه‌ای شبیه این دارید؟ <span>ببینید پیش از هر هزینه، مسئله را چطور تعریف می‌کنیم.</span></p><div class="row"><a class="btn btn-primary" href="#contact">شروع گفت‌وگو</a><a class="btn" href="approach.html">روش کار را ببینید <span class="arr" aria-hidden="true">←</span></a></div></div>
   </div>
 </div>
 
 <!-- 07 · CTA (shared by every view) -->
 <section class="contact on-dark" id="contact" aria-labelledby="ct-h">
-  <svg class="big" viewBox="0 0 3 3" aria-hidden="true"><path d="M1 0H3V2A1 1 0 0 0 2 3H1A1 1 0 0 0 0 2V1A1 1 0 0 0 1 0Z"/></svg>
+  
   <div class="wrap">
     <div class="c-grid">
       <div class="c-head">
-        <p class="eyebrow"><b>شروع همکاری</b><span class="mono">Let’s talk</span></p>
+        <p class="eyebrow"><b>تماس</b><span class="mono">Contact · Consultation request</span></p>
         <h2 id="ct-h">مسئله‌ی بعدی را <span class="soft">با هم حل کنیم.</span></h2>
         <p class="lede">پانزده دقیقه گفت‌وگو؛ از وضعیت فروشتان می‌گویید و با تصویری روشن از قدم اول برمی‌گردید.</p>
         <ul class="promises"><li>رایگان و بدون تعهد</li><li>یک مسئول پاسخ‌گو</li><li>حساب‌ها و داده به نام شما</li></ul>
@@ -843,7 +1076,7 @@ body.intro-on .top{opacity:0}
     </div>
     <footer class="foot">
       <a class="lockup" href="index.html#hero" aria-label="DOT’s، صفحه‌ی اصلی" translate="no"><svg viewBox="0 0 3 3" aria-hidden="true"><path d="M1 0H3V2A1 1 0 0 0 2 3H1A1 1 0 0 0 0 2V1A1 1 0 0 0 1 0Z"/></svg><span><span class="w">DOT’s</span><span class="n">علیرضا محرزی</span></span></a>
-      <nav aria-label="پیوندهای پایین صفحه"><a href="capabilities.html">توانمندی‌ها</a><a href="work.html">نمونه‌کار</a><a href="approach.html">روش کار</a><a href="#contact">تماس</a></nav>
+      <nav aria-label="پیوندهای پایین صفحه"><a href="capabilities.html">خدمات</a><a href="work.html">نمونه‌کار</a><a href="about.html">درباره</a><a href="approach.html">روش کار</a><a href="#contact">تماس</a></nav>
       <p class="mono"><span>© 2026 DOT’S · Isfahan</span><span>0913 228 9608 · alireza.mohrezi1991@gmail.com</span></p>
     </footer>
   </div>
