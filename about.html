@@ -1008,24 +1008,47 @@ body.intro-on .top{opacity:0}
 .resume-timeline span,.resume-timeline small{color:var(--mute);font-size:.875rem}
 .resume-timeline strong{color:var(--ink);font-size:.95rem;font-weight:700}
 .resume-results,.resume-skills{margin-block-start:24px;padding-block-start:20px;border-block-start:1px solid var(--line)}
-.resume-results ul,.resume-courses,.resume-tools{margin:0;padding:0;list-style:none}
-.resume-results ul,.resume-courses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px}
-.resume-results li,.resume-courses li{position:relative;padding-inline-start:14px;line-height:1.85;color:var(--ink2)}
-.resume-results li::before,.resume-courses li::before{content:"";position:absolute;inset-inline-start:0;inset-block-start:.8em;width:5px;height:5px;border-radius:50%;background:var(--green)}
+.resume-results ul,.resume-tools{margin:0;padding:0;list-style:none}
+.resume-results ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px}
+.resume-results li li{position:relative;padding-inline-start:14px;line-height:1.85;color:var(--ink2)}
+.resume-results li::before li::before{content:"";position:absolute;inset-inline-start:0;inset-block-start:.8em;width:5px;height:5px;border-radius:50%;background:var(--green)}
 .resume-results strong{color:var(--green)}
-.resume-skills{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:20px 30px}
-.resume-skills p{line-height:1.9;color:var(--ink2)}
-.resume-skills h4:not(:first-child){margin-block-start:16px}
+
+
+
 .resume-tools{display:flex;flex-wrap:wrap;gap:6px}
 .resume-tools li{padding:3px 9px;border:1px solid var(--line);border-radius:999px;background:var(--cream);font:500 .875rem var(--la);color:var(--ink2)}
-@media(max-width:900px){.resume-timeline{grid-template-columns:repeat(3,minmax(0,1fr))}.resume-courses{grid-template-columns:1fr}}
+@media(max-width:900px){.resume-timeline{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){
-  .resume-timeline,.resume-results ul,.resume-skills{grid-template-columns:1fr}
+  .resume-timeline,.resume-results ul{grid-template-columns:1fr}
   .resume-timeline{row-gap:0}
   .resume-timeline li{border-block-start:0;border-inline-start:1px solid var(--line);padding:0 14px 16px 0}
   .resume-timeline li:last-child{padding-block-end:0}
   .resume-timeline li::before{inset-block-start:.55em;inset-inline-start:-5px}
 }
+
+.resume-learning{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);align-items:start;gap:clamp(16px,2.5vw,32px)}
+.resume-course-panel,.resume-traits{min-inline-size:0;padding:clamp(14px,2.1vw,24px);border:1px solid var(--line);border-radius:calc(var(--r) - 4px);background:var(--cream)}
+.resume-course-panel h4,.resume-traits h4{margin-block-end:16px;font-size:clamp(1.1rem,2vw,1.35rem)}
+.resume-providers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.resume-provider{min-inline-size:0;padding:12px;background:var(--sand);border:1px solid var(--line);border-radius:12px}
+.resume-provider h5{display:flex;align-items:center;gap:8px;margin:0 0 8px;color:var(--green);font-size:.85rem;font-weight:700}
+.resume-provider .resume-logo{display:grid;place-items:center;flex:none;inline-size:54px;block-size:44px;padding:4px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.resume-logo img{display:block;width:100%;height:100%;object-fit:contain}
+.resume-provider ul{margin:0;padding-inline-start:1em;color:var(--ink);line-height:1.8;font-size:.9rem;overflow-wrap:anywhere}
+.resume-network{display:grid;grid-template-columns:minmax(0,1fr) 78px minmax(0,1fr);grid-template-rows:auto auto auto;gap:10px 7px;min-block-size:165px;margin:0 0 18px;padding:0;align-items:center;list-style:none;position:relative}
+.resume-network::before{content:"";position:absolute;inset:50% auto auto 50%;inline-size:min(145px,80%);aspect-ratio:1;transform:translate(-50%,-50%);border:1px dashed var(--green);border-radius:50%;opacity:.45}
+.resume-network::after{content:"";grid-area:2/2;justify-self:center;align-self:center;inline-size:58px;aspect-ratio:1;border:1px solid var(--green);border-radius:50%;background:radial-gradient(circle,var(--green) 0 7%,var(--tint) 8% 28%,var(--cream) 29% 57%,var(--sand) 58% 100%);position:relative}
+.resume-network li{position:relative;justify-self:center;text-align:center;color:var(--ink);background:var(--sand);border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:.82rem;line-height:1.55;font-weight:600}
+.resume-network li:nth-child(1){grid-area:1/1/2/4}
+.resume-network li:nth-child(2){grid-area:2/1}
+.resume-network li:nth-child(3){grid-area:2/3}
+.resume-network li:nth-child(4){grid-area:3/1/4/3}
+.resume-network li:nth-child(5){grid-area:3/2/4/4}
+.resume-traits h5{margin:0 0 8px;padding-block-start:12px;border-block-start:1px solid var(--line);font-size:.9rem;color:var(--ink)}
+@media(max-width:900px){.resume-learning{grid-template-columns:1fr}}
+@media(max-width:490px){.resume-providers{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1127,28 +1150,50 @@ body.intro-on .top{opacity:0}
           <li><span>۱۳۸۸ تا ۱۳۹۳</span><strong>کارشناسی عمران</strong><small>دانشگاه شهید اشرفی اصفهانی</small></li>
           <li><span>۱۳۹۵ تا ۱۳۹۷</span><strong>کارشناسی ارشد پژوهش هنر</strong><small>دانشگاه هنر اصفهان</small></li>
         </ol>
-        <div class="resume-skills">
-          <div>
-            <h4>هر دوره برای حل یک مسئله</h4>
-            <ul class="resume-courses" role="list">
-              <li>بازاریابی حرفه‌ای در بازار ایران · دانشگاه تهران</li>
-              <li>برندینگ در بازار ایران · دانشگاه تهران</li>
-              <li>مشاوره مدیریت · شاپرک</li>
-              <li>حل مسئله و ارزیابی سیستم‌ها (<bdi lang="en">AUDIT</bdi>) · <bdi lang="en">IBM</bdi></li>
-              <li>خلاقیت در تبلیغات · مدرسه اینورس</li>
-              <li>کمپین تبلیغاتی · مدرسه اینورس</li>
-              <li>بهینه‌سازی موتور جست‌وجو (<bdi lang="en">SEO</bdi>) · مدرسه اینورس</li>
+        <div class="resume-skills resume-learning">
+          <section class="resume-course-panel" aria-labelledby="resume-courses">
+            <h4 id="resume-courses">هر دوره برای حل یک مسئله</h4>
+            <ul class="resume-providers" role="list">
+              <li class="resume-provider">
+                <h5><span class="resume-logo"><img src="https://ut.ac.ir/assets/d95e2169/images/logos/loading-logo.png" alt="" width="46" height="36" decoding="async"></span>دانشگاه تهران</h5>
+                <ul>
+                  <li>بازاریابی حرفه‌ای در بازار ایران</li>
+                  <li>برندینگ در بازار ایران</li>
+                </ul>
+              </li>
+              <li class="resume-provider">
+                <h5><span class="resume-logo"><img src="https://shaparak.blue/wp-content/uploads/2022/08/002.png" alt="" width="46" height="36" decoding="async"></span>شاپرک آبی</h5>
+                <ul><li>مشاوره مدیریت</li></ul>
+              </li>
+              <li class="resume-provider">
+                <h5><span class="resume-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="" width="46" height="36" decoding="async"></span><bdi lang="en">IBM</bdi></h5>
+                <ul><li>حل مسئله و ارزیابی سیستم‌ها (<bdi lang="en">AUDIT</bdi>)</li></ul>
+              </li>
+              <li class="resume-provider">
+                <h5><span class="resume-logo"><img src="https://inverseschool.com/assets/images/logo-bozorg.png" alt="" width="46" height="36" decoding="async"></span>مدرسه اینورس</h5>
+                <ul>
+                  <li>خلاقیت در تبلیغات</li>
+                  <li>کمپین تبلیغاتی</li>
+                  <li>بهینه‌سازی موتور جست‌وجو (<bdi lang="en">SEO</bdi>)</li>
+                </ul>
+              </li>
             </ul>
-          </div>
-          <div>
-            <h4>مهارت‌های نرم</h4>
-            <p>تفکر خلاق، تفکر سیستمی، تفکر فرصت‌جویی، تفکر آینده‌پژوهی و تفکر سیستم‌سازی.</p>
-            <h4>نرم‌افزارها</h4>
+          </section>
+          <section class="resume-traits" aria-labelledby="resume-traits">
+            <h4 id="resume-traits">مهارت‌های نرم</h4>
+            <ul class="resume-network" role="list">
+              <li>تفکر خلاق</li>
+              <li>تفکر سیستمی</li>
+              <li>تفکر فرصت‌جویی</li>
+              <li>تفکر آینده‌پژوهی</li>
+              <li>تفکر سیستم‌سازی</li>
+            </ul>
+            <h5>نرم‌افزارها</h5>
             <ul class="resume-tools" role="list" lang="en">
               <li dir="ltr">Photoshop</li><li dir="ltr">Trello</li><li dir="ltr">Notion</li>
               <li dir="ltr">Excel</li><li dir="ltr">Google Analytics</li><li dir="ltr">Microsoft Clarity</li>
             </ul>
-          </div>
+          </section>
         </div>
       </section>
     </section>
