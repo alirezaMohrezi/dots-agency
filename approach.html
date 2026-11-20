@@ -999,24 +999,39 @@ body.intro-on .top{opacity:0}
 .map-legend .lg-on{background:#83f3d7;box-shadow:none}
 .map-legend .lg-done{background:#9cb8ec}
 .map-legend .lg-out{background:#ffc975;box-shadow:none}
-/* Quiet surfaces for the approach page */
-.lab,.contact{background:#182321}
-.lab .mpanel{background:#22302d;border:1px solid #41534e;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
-.lab .mpanel::before{display:none}
-.lab .mmap{background:#141f1d;border:1px solid #465952}
-.lab .mpanel .seg{background:#172320;box-shadow:none}
-.lab .mpanel .seg-thumb{background:#254139;box-shadow:none;transition:right .2s ease-out}
-.lab .mpanel .seg-btn:hover{text-shadow:none}
-.lab .mpanel .ph{background:#263631}
-.lab .mpanel .ph.on{background:#2a4038;box-shadow:inset 0 0 0 1px #71c6b1}
-.lab .mpanel .ph:not(.on) .ph-tools{opacity:1}
-.lab .mpanel .tool.on i,.lab .mpanel .ph-head.on::after,.lab .mpanel .tool.done i{box-shadow:none;scale:1}
-.lab .mdetail,.lab .gp-foot{background:#182522;box-shadow:none;border:1px solid #40564e}
-.lab .gp-foot:focus-within{border-color:#83f3d7}
-.vbody .vcta{background:#1c312b}
-.vbody .vcta .btn-primary{background:#a5efdb;border-color:#a5efdb;color:#152b24}
-.vbody .vcta .btn-primary:hover{background:#c2f9ea;border-color:#c2f9ea}
-@media (prefers-reduced-motion:reduce){.lab .mpanel .seg-thumb{transition:none}}
+/* The approach page uses the same cream and sand surfaces as the other service pages. */
+#p-approach .lab{padding:0 0 32px;background:var(--cream);color:var(--ink)}
+#p-approach .mpanel{background:var(--sand);color:var(--ink);border:1px solid rgba(20,22,21,.14);border-radius:var(--r);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+#p-approach .mpanel::before{display:none}
+#p-approach .mmap{background:#182321;border:1px solid rgba(20,22,21,.18)}
+#p-approach .map-legend{color:var(--ink)}
+#p-approach .map-legend .lg-step{background:#596761}
+#p-approach .map-legend .lg-on{background:var(--green)}
+#p-approach .map-legend .lg-done{background:#45699e}
+#p-approach .map-legend .lg-out{background:#a26922}
+#p-approach .mpanel .seg{background:var(--cream);box-shadow:none;border:1px solid rgba(20,22,21,.14)}
+#p-approach .mpanel .seg-thumb{background:#dcece4;box-shadow:none;outline-color:var(--green);transition:right .2s ease-out}
+#p-approach .mpanel .seg-btn,#p-approach .gp-status,#p-approach .ph-head small,#p-approach .td-k,#p-approach .gp-foot label{color:#46514a}
+#p-approach .mpanel .seg-btn[aria-pressed="true"],#p-approach .md-step,#p-approach .ph-done{color:var(--green)}
+#p-approach .mpanel .seg-btn small,#p-approach .mpanel .seg-btn.sel small{color:inherit;opacity:1}
+#p-approach .mpanel .seg-btn:hover{text-shadow:none}
+#p-approach .mpanel :is(.seg-btn,.glass):focus-visible{outline:2px solid var(--green);outline-offset:2px}
+#p-approach .mpanel .ph,#p-approach .mdetail,#p-approach .gp-foot{background:var(--cream);border:1px solid rgba(20,22,21,.14);box-shadow:none}
+#p-approach .mpanel .ph.on{border-color:var(--green)}
+#p-approach .mpanel .ph:not(.on) .ph-tools{opacity:1}
+#p-approach .mpanel .glass{color:var(--ink);border-color:rgba(20,22,21,.25)}
+#p-approach .mpanel .tool.on,#p-approach .mpanel .ph-head.on{background:#dcece4;border-color:var(--green)}
+#p-approach .mpanel .tool.out{background:#f3e4c8;color:#603c15;border-color:#ad7839}
+#p-approach .mpanel .tool.out.on{outline:2px solid #99621e;outline-offset:-2px}
+#p-approach .mpanel .tool i,#p-approach .mpanel .ph-head::after{background:#65726b;box-shadow:none}
+#p-approach .mpanel .tool.done i{background:#45699e}
+#p-approach .mpanel .tool.on i,#p-approach .mpanel .ph-head.on::after{background:var(--green);scale:1}
+#p-approach .mpanel .tool.out i{background:#99621e}
+#p-approach .mdetail p,#p-approach .gp-input{color:var(--ink)}
+#p-approach .gp-input::placeholder{color:#535a53}
+#p-approach .gp-foot:focus-within{border-color:var(--green)}
+#p-approach .live{animation:none;background:var(--green)}
+@media (prefers-reduced-motion:reduce){#p-approach .mpanel .seg-thumb{transition:none}}
 </style>
 </head>
 <body>
@@ -1044,18 +1059,18 @@ body.intro-on .top{opacity:0}
 
 <main id="main">
 <div class="page" id="p-approach">
-  <section class="lab on-dark" aria-labelledby="mth-h">
-    <div class="wrap vhead">
+  <div class="wrap vhead">
       <a class="crumb glass" href="index.html#approach"><span class="a" aria-hidden="true">→</span>صفحه‌ی اصلی</a>
       <p class="eyebrow"><b>روش کار</b><span class="mono">How we work</span></p>
       <h1 id="mth-h">داتس فروش شما را چگونه بررسی می‌کند؟</h1>
       <p class="lede">اگر تبلیغات بازدید سایت شما را افزایش داده، اما سفارش‌ها به همان نسبت بیشتر نشده‌اند، بررسی می‌کنیم چه تعداد از بازدیدکنندگان محصول را به سبد اضافه می‌کنند، وارد مرحلهٔ پرداخت می‌شوند و خرید را کامل می‌کنند. این مقایسه نشان می‌دهد کدام مرحله به بررسی بیشتری نیاز دارد و کمک می‌کند تصمیم بگیرید اصلاح را از کجا آغاز کنید.</p>
-    </div>
+  </div>
+  <section class="lab" aria-labelledby="mth-h">
     <div class="wrap">
       <div class="mth" id="method">
         <div class="gpanel mpanel">
         <div class="gp-head">
-          <div class="gp-title"><span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>نقشه‌ی حل مسئله</span></div>
+          <div class="gp-title"><span>نقشهٔ حل مسئله</span></div>
           <div class="seg" id="seg" role="group" aria-label="مرحله‌ها" style="--s:0">
             <span class="seg-thumb" aria-hidden="true"></span>
             <button type="button" class="seg-btn" aria-pressed="true"><small>۰۱</small>شناخت نیاز</button>
