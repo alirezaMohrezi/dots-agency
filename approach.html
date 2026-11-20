@@ -1041,6 +1041,8 @@ body.intro-on .top{opacity:0}
 #p-approach .gp-foot:focus-within{border-color:var(--green)}
 #p-approach .live{animation:none;background:var(--green)}
 @media (prefers-reduced-motion:reduce){#p-approach .mpanel .seg-thumb{transition:none}}
+#p-approach .mpanel .stage-number{font-family:inherit;font-size:inherit;font-weight:700;font-variant-numeric:tabular-nums;flex:none;min-inline-size:1ch;text-align:center}
+#p-approach #segStatus{font-variant-numeric:tabular-nums;text-align:start}
 </style>
 </head>
 <body>
@@ -1082,11 +1084,11 @@ body.intro-on .top{opacity:0}
           <div class="gp-title"><span>نقشهٔ حل مسئله</span></div>
           <div class="seg" id="seg" role="group" aria-label="مرحله‌ها" style="--s:0">
             <span class="seg-thumb" aria-hidden="true"></span>
-            <button type="button" class="seg-btn" aria-pressed="true"><small>۰۱</small>شناخت نیاز</button>
-            <button type="button" class="seg-btn" aria-pressed="false"><small>۰۲</small>ساختار مسئله</button>
-            <button type="button" class="seg-btn" aria-pressed="false"><small>۰۳</small>یافتن راه‌حل</button>
+            <button type="button" class="seg-btn" aria-pressed="true"><small class="stage-number" dir="ltr">۱</small>شناخت نیاز</button>
+            <button type="button" class="seg-btn" aria-pressed="false"><small class="stage-number" dir="ltr">۲</small>ساختار مسئله</button>
+            <button type="button" class="seg-btn" aria-pressed="false"><small class="stage-number" dir="ltr">۳</small>یافتن راه‌حل</button>
           </div>
-          <div class="gp-status"><span class="live" aria-hidden="true"></span><span id="segStatus"></span><button type="button" class="glass mpause" id="mPause" aria-pressed="false" aria-label="توقف حرکت نقشه"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 2h3v10H3zM8 2h3v10H8z"/></svg></button></div>
+          <div class="gp-status"><span class="live" aria-hidden="true"></span><span id="segStatus" dir="rtl"></span><button type="button" class="glass mpause" id="mPause" aria-pressed="false" aria-label="توقف حرکت نقشه"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 2h3v10H3zM8 2h3v10H8z"/></svg></button></div>
         </div>
         <div class="mmap-wrap">
           <div class="mmap" id="mMap" dir="ltr" role="img" aria-label="نقشهٔ حل مسئله در سه مرحله: شناخت نیاز، ساختار مسئله و یافتن راه‌حل. فعالیت‌ها زیر هر مرحله و نتیجه‌ها در امتداد مسیر قرار دارند.">
@@ -1497,7 +1499,7 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
     const box = $('#phases'), segEl = $('#seg'), segBtns = $$('.seg-btn', segEl), prevB = $('#mPrev'), nextB = $('#mNext');
     const cols = PH.map((ph, j) => {
       const d = document.createElement('div'); d.className = 'ph';
-      d.innerHTML = `<button type="button" class="ph-head glass" aria-pressed="false"><small>مرحله‌ی ${fa(j + 1)} · <bdi class="t-en">${ph.en}</bdi> <span class="ph-done">· انجام شد</span></small><b>${ph.fa}</b><small>${ph.subs[0][0]} ← ${ph.subs[1][0]}</small></button><ul class="ph-tools">${ST[j].map((t) => `<li><button type="button" class="tool glass${t.out ? ' out' : ''}" aria-pressed="false"><i aria-hidden="true"></i><span>${t.fa}</span>${t.en && t.en !== t.fa ? `<bdi class="t-en">${t.en}</bdi>` : ''}</button></li>`).join('')}</ul>`;
+      d.innerHTML = `<button type="button" class="ph-head glass" aria-pressed="false"><small>مرحلهٔ ${fa(j + 1)} · <bdi class="t-en">${ph.en}</bdi> <span class="ph-done">· انجام شد</span></small><b>${ph.fa}</b><small>${ph.subs[0][0]} ← ${ph.subs[1][0]}</small></button><ul class="ph-tools">${ST[j].map((t) => `<li><button type="button" class="tool glass${t.out ? ' out' : ''}" aria-pressed="false"><i aria-hidden="true"></i><span>${t.fa}</span>${t.en && t.en !== t.fa ? `<bdi class="t-en">${t.en}</bdi>` : ''}</button></li>`).join('')}</ul>`;
       box.appendChild(d); return d;
     });
 
@@ -1515,8 +1517,8 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
         $$('.tool', c).forEach((b, i) => { const on = j === s && i === k; b.classList.toggle('on', on); b.classList.toggle('done', j < s || (j === s && i < k)); b.setAttribute('aria-pressed', on); });
       });
       const st = ST[s][k], isOut = k === LEN[s] - 1;
-      $('#segStatus').textContent = isOut ? `خروجی مرحله‌ی ${fa(s + 1)} از ۳` : `مرحله‌ی ${fa(s + 1)} از ۳ · مقصد: ${MSN[s + 1]}`;
-      $('#tdK').textContent = `مرحله‌ی ${fa(s + 1)} · ${PH[s].fa}`;
+      $('#segStatus').textContent = isOut ? `نتیجهٔ مرحلهٔ ${fa(s + 1)} از ${fa(PH.length)}` : `مرحلهٔ ${fa(s + 1)} از ${fa(PH.length)}، نتیجهٔ مورد انتظار: ${MSN[s + 1]}`;
+      $('#tdK').textContent = `مرحلهٔ ${fa(s + 1)} · ${PH[s].fa}`;
       $('#tdStep').textContent = isOut ? 'خروجی این مرحله' : `فعالیت ${fa(k + 1)} از ${fa(PH[s].items.length - (PH[s].out ? 0 : 1))}`;
       $('#tdName').innerHTML = st.fa + (st.en && st.en !== st.fa ? ` <bdi class="t-en">${st.en}</bdi>` : '');
       $('#tdText').textContent = st.d;
@@ -1688,7 +1690,7 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
         ctx.font = "600 10.5px 'DM Sans', sans-serif"; LS('0.08em'); const w2 = ctx.measureText(ph.en.toUpperCase()).width; LS('0px');
         const w = Math.max(w1, w2) + 36, x = clampX(jx, w);
         plate(x, y, w, 64, s === seg, '159,245,232');
-        ctx.font = FONT(600, 11); ctx.fillStyle = s === seg ? 'rgba(159,245,232,.95)' : `rgba(249,245,236,${a * 0.72})`; ctx.fillText(`مرحله‌ی ${fa('0' + (s + 1))}`, x, y - 19);
+        ctx.font = FONT(600, 11); ctx.fillStyle = s === seg ? 'rgba(159,245,232,.95)' : `rgba(249,245,236,${a * 0.72})`; ctx.fillText(`مرحلهٔ ${fa(s + 1)}`, x, y - 19);
         ctx.font = FONT(800, 16); ctx.fillStyle = `rgba(249,245,236,${a})`; ctx.fillText(ph.fa, x, y + 1);
         ctx.direction = 'ltr'; ctx.font = "600 10.5px 'DM Sans', sans-serif"; LS('0.08em'); ctx.fillStyle = `rgba(249,245,236,${a * 0.62})`; ctx.fillText(ph.en.toUpperCase(), x, y + 20); LS('0px');
       });
