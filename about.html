@@ -1042,9 +1042,9 @@ body.intro-on .top{opacity:0}
 .resume-trait-list li:last-child{border-block-end:0}
 .resume-technical{grid-column:1 / -1}
 .resume-abilities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
-.resume-abilities div{display:grid;gap:6px;min-inline-size:0;padding:10px 12px;background:var(--sand);border:1px solid var(--line);border-radius:10px}
+.resume-abilities div{display:grid;grid-template-rows:1fr auto;gap:6px;min-inline-size:0;padding:10px 12px;background:var(--sand);border:1px solid var(--line);border-radius:10px}
 .resume-abilities dt{font-size:.95rem;font-weight:700}
-.resume-abilities dd{justify-self:start;margin:0;padding:1px 8px;background:var(--cream);border-radius:999px;color:var(--green);font-size:.84rem;font-weight:700}
+.resume-abilities dd{justify-self:start;margin:0;color:var(--green);font-size:.84rem;font-weight:700}
 .resume-tools li{overflow-wrap:anywhere}
 @media(max-width:820px){.resume-learning{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.resume-abilities{grid-template-columns:minmax(0,1fr)}.resume-provider ul{padding-inline-start:1.25em}}
