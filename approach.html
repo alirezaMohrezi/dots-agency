@@ -484,16 +484,99 @@ h2 .soft{font-weight:300;color:var(--mute)}
 .gp-input::placeholder{color:rgba(249,245,236,.5)}
 .gp-foot:focus-within{box-shadow:0 0 0 2px rgba(249,245,236,.4)}
 
-/* Approach steps */
-.lab{padding:0 0 clamp(40px,7vw,88px);background:var(--glow)}
-.method-steps{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,24px);margin:0;padding:0}
-.method-step{display:flex;flex-direction:column;gap:12px;padding:clamp(18px,3vw,32px);border:1px solid rgba(159,245,232,.2);border-radius:22px;background:rgba(0,0,0,.26)}
-.method-number{display:grid;place-items:center;inline-size:36px;block-size:36px;border-radius:50%;background:#9ff5e8;color:#102925;font-weight:700}
-.method-step h2{margin:0;color:var(--cream);font-size:clamp(1.25rem,2.4vw,1.65rem);line-height:1.55}
-.method-step p{margin:0;color:#ece9df;font-size:1rem;line-height:1.9}
-.method-step .method-result{margin-top:auto;padding-top:12px;border-top:1px solid rgba(159,245,232,.2)}
-.method-result strong{display:block;color:#9ff5e8}
-@media (max-width:780px){.method-steps{grid-template-columns:minmax(0,1fr)}}
+/* ═════ Method map v3 — glass controls + magnetic dot network ═════
+   colour code: cream = a step · teal light = selected / the path travelled · wine = the output of a stage */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mth{position:relative;margin-top:clamp(72px,9vw,120px);scroll-margin-top:96px}
+.mth-intro{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px 24px;align-items:end;margin-bottom:32px}
+.mth-intro .eyebrow{grid-column:1/-1;margin:0}
+.mth-title{grid-column:span 6;margin:0;font-size:clamp(28px,3vw,42px);font-weight:800;line-height:1.4}
+.mth-lead{grid-column:8/span 5;margin:0;font-size:15.5px;line-height:2;color:rgba(249,245,236,.8)}
+@media (max-width:900px){.mth-title,.mth-lead{grid-column:span 12}}
+
+/* stage switch */
+.mpanel .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,440px);padding:4px;background:rgba(0,0,0,.32)}
+.mpanel .seg-thumb{right:calc(4px + var(--s) * ((100% - 8px) / 3));width:calc((100% - 8px) / 3);background:rgba(249,245,236,.15);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 18px -6px rgba(54,224,200,.55),0 0 0 1px rgba(159,245,232,.22),0 8px 22px -10px rgba(54,224,200,.5);transition:right .55s cubic-bezier(.34,1.3,.64,1)}
+.mpanel .seg-btn{width:auto;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;font-size:14px;white-space:nowrap}
+.mpanel .seg-btn small{font-family:var(--mono);font-size:11px;opacity:.6}
+.mpanel .seg-btn.sel small{color:var(--teal-l);opacity:1}
+
+/* map */
+.mmap{position:relative;height:clamp(320px,30vw,400px);overflow:hidden;border-radius:22px;
+  background:radial-gradient(55% 80% at 82% 50%,rgba(0,110,98,.3),transparent 70%),radial-gradient(45% 70% at 14% 50%,rgba(121,30,35,.24),transparent 70%),rgba(0,0,0,.26)}
+.mmap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y}
+.map-legend{position:absolute;bottom:12px;left:16px;display:flex;gap:16px;font-size:12px;color:rgba(249,245,236,.72);pointer-events:none}
+.map-legend span{display:inline-flex;align-items:center;gap:6px}
+.map-legend i{width:8px;height:8px;border-radius:50%}
+.lg-step{background:rgba(249,245,236,.8)}.lg-on{background:var(--teal);box-shadow:0 0 8px 1px rgba(54,224,200,.6)}.lg-out{background:var(--wine);box-shadow:0 0 0 1.5px var(--cream)}
+
+/* stage columns and steps */
+.mpanel .phases{gap:12px}
+.mpanel .ph{padding:12px;border-radius:22px;background:rgba(0,0,0,.22);opacity:1;transition:background-color .4s,box-shadow .5s}
+.mpanel .ph.on{background:rgba(0,0,0,.32);box-shadow:inset 0 0 0 1px rgba(159,245,232,.14)}
+.mpanel .ph:not(.on) .ph-tools{opacity:.55;transition:opacity .4s}
+.mpanel .ph-head{padding:12px 14px;border-radius:16px;gap:2px}
+.mpanel .ph-head b{font-size:16px}
+.mpanel .ph-head .ph-done{display:none;font-size:12px;color:var(--teal-l)}
+.mpanel .ph.done .ph-head .ph-done{display:inline}
+.mpanel .ph-tools{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.mpanel .ph-tools li:last-child{margin-top:6px}
+.mpanel .tool{min-height:44px;padding:8px 14px;border-radius:14px;line-height:1.6;color:rgba(249,245,236,.84)}
+
+/* explanation + step navigation */
+.mdetail{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"meta nav" "name nav" "text nav";align-items:center;gap:6px 24px}
+.md-meta{grid-area:meta;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.md-step{font-size:12px;color:var(--teal-l)}
+.mdetail #tdName{grid-area:name;font-size:18px}
+.mdetail #tdText{grid-area:text}
+.md-nav{grid-area:nav;display:flex;gap:8px}
+.gbtn{min-height:44px;padding:0 18px;border-radius:999px;cursor:pointer;font-size:14px;font-weight:700;color:var(--cream);white-space:nowrap}
+.gbtn:disabled{opacity:.35;cursor:default;transform:none}
+@media (max-width:900px){.mpanel{display:flex;flex-direction:column}.mpanel .mmap{order:1}.mpanel .mdetail{order:2}.mpanel .phases{order:3}.mpanel .gp-foot{order:4}.mpanel .ph:not(.on) .ph-tools{display:none}.mpanel .ph:not(.on){padding:6px}}
+@media (max-width:700px){.mdetail{grid-template-columns:minmax(0,1fr);grid-template-areas:"meta" "name" "text" "nav"}.md-nav{margin-top:8px}.md-nav .gbtn{flex:1}}
+@media (max-width:560px){.mpanel .seg{width:100%}.mpanel .seg-btn{font-size:13px;padding:0 4px;gap:4px}.mmap{height:460px}.map-legend{left:12px;bottom:10px;gap:12px;font-size:11px}}
+
+/* method panel: switch = recessed track with a raised glass knob; steps = soft keys; outputs = wine keys */
+.mpanel .seg{background:rgba(0,0,0,.34);box-shadow:inset 3px 3px 9px rgba(0,0,0,.65),inset -2px -2px 6px rgba(255,255,255,.05)}
+.mpanel .seg-thumb{background-color:rgba(255,255,255,.1);background-image:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 60%);
+  box-shadow:-3px -3px 8px rgba(255,255,255,.05),4px 5px 12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.32),0 0 0 1px rgba(159,245,232,.26),inset 0 0 14px -6px rgba(54,224,200,.6)}
+.mpanel .seg-btn:hover{color:var(--cream);text-shadow:0 0 12px rgba(159,245,232,.45)}
+.mpanel .seg-btn:focus-visible{outline:2px solid rgba(159,245,232,.9);outline-offset:-2px}
+.mpanel .ph-head{border-radius:18px}
+.mpanel .ph-head::after{content:"";position:absolute;top:16px;left:16px;width:8px;height:8px;border-radius:50%;background:var(--dimple);box-shadow:inset 1px 1px 2px rgba(0,0,0,.45),inset -1px -1px 1px rgba(255,255,255,.2);transition:background-color .45s,box-shadow .5s}
+.mpanel .tool{min-height:46px;padding:8px 16px;border-radius:16px;line-height:1.6;color:rgba(249,245,236,.86);gap:12px}
+.mpanel .tool.on{font-weight:700}
+.mpanel .tool.out{--s-bg:rgba(121,30,35,.6);--s-bg-h:rgba(142,38,44,.72);--s-well:rgba(70,16,20,.75);--s-rim:rgba(240,169,156,.6);--s-rim-lo:rgba(240,169,156,.06);
+  --lit:240,169,156;--lit-c:255,214,205;--dimple:rgba(40,6,8,.55);font-weight:700;color:var(--cream)}
+.gbtn{min-height:46px;padding:0 20px}
+/* method map v4: the reference diagram (three diamonds, trajectory, supporting activities) */
+.mmap-wrap{position:relative}
+.mmap-wrap .map-legend{position:static;flex-wrap:wrap;row-gap:4px;margin:10px 4px 0;justify-content:flex-start}
+.mmap{height:auto;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.mmap::-webkit-scrollbar{display:none}
+.mmap-in{position:relative;min-width:1040px;height:440px}
+.mmap-in canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-x pan-y}
+.map-hint{display:none}
+.t-en{white-space:nowrap;font-family:var(--la);direction:ltr;unicode-bidi:isolate;font-size:11px;font-weight:600;letter-spacing:.01em;opacity:.62}
+.mpanel .tool .t-en{margin-inline-start:auto;padding-inline-start:10px}
+.mdetail #tdName .t-en{margin-inline-start:10px;font-size:12px}
+@media (max-width:900px){.map-hint{display:inline}.map-legend{flex-wrap:wrap;row-gap:4px}}
+@media (max-width:560px){.mmap{height:auto}}
+
+@media (max-width:900px){.tool-detail{grid-template-columns:1fr}.phases{grid-template-columns:1fr}.ph{opacity:1}.seg{--sw:80px}}
+@media (max-width:560px){.gp-head{flex-direction:column;align-items:flex-start}.seg{--sw:74px}.gpanel{padding:12px;border-radius:26px}}
+.lab{padding:0 0 56px;background:var(--glow)}
+.mth{margin-top:0}
+.gp-foot{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.05);box-shadow:inset 3px 3px 8px rgba(0,0,0,.55),inset -2px -2px 6px rgba(255,255,255,.04)}
+.gp-foot .btn{flex:none}
+.gp-input{min-height:44px}
+.mpanel .tool i{content:"";flex:none;display:block;width:8px;height:8px;border-radius:50%;background:var(--dimple);box-shadow:inset 1px 1px 2px rgba(0,0,0,.45),inset -1px -1px 1px rgba(255,255,255,.2);transition:background-color .45s,box-shadow .5s,scale .4s var(--spring)}
+@media (hover:hover){.mpanel .tool:hover i{background:rgba(var(--lit-c),.6);box-shadow:0 0 6px rgba(var(--lit),.5);scale:1.1}}
+.mpanel .tool.on i,.mpanel .ph-head.on::after{background:rgb(var(--lit-c));box-shadow:0 0 0 2px rgba(var(--lit-c),.16),0 0 10px 2px rgba(var(--lit),.65);scale:1.15}
+.mpanel .tool.done i{background:rgba(var(--lit-c),.55);box-shadow:inset 1px 1px 2px rgba(0,0,0,.25)}
+.mpanel .tool,.mpanel .ph-head,.gbtn{display:flex}
+.mpanel .ph-head{flex-direction:column;align-items:flex-start;width:100%;text-align:right}
 
 /* motion: one quiet reveal per block, under 500 ms (NN/g), page changes cross-fade */
 @view-transition{navigation:auto}
@@ -908,6 +991,14 @@ body.intro-on .top{opacity:0}
 .pkv .kv-tag{right:16px;top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;direction:ltr;color:rgba(20,22,21,.6)}
 @media (max-width:640px){.pkv{--H:236px;--yp:.54}.pkv-near{--k:1.7}.pkv .kv-l{font-size:13px}.pkv .kv-l i{font-size:10px;letter-spacing:.08em}}
 
+/* Color roles for the method map */
+.mpanel .seg-btn[aria-pressed="true"]{color:#b9fff0}
+.mpanel .seg-thumb{outline:1px solid #70e2c7;outline-offset:-1px}
+.mpanel .tool.out{--s-bg:rgba(105,65,20,.56);--s-bg-h:rgba(131,81,24,.7);--s-well:rgba(67,42,16,.8);--s-rim:rgba(255,201,117,.55);--s-rim-lo:rgba(255,201,117,.12);--lit:255,201,117;--lit-c:255,217,154;--dimple:rgba(38,23,9,.65)}
+.mmap-wrap .map-legend{color:#e7e6de}
+.map-legend .lg-on{background:#83f3d7;box-shadow:none}
+.map-legend .lg-done{background:#9cb8ec}
+.map-legend .lg-out{background:#ffc975;box-shadow:none}
 </style>
 </head>
 <body>
@@ -942,27 +1033,39 @@ body.intro-on .top{opacity:0}
       <h1 id="mth-h">داتس فروش شما را چگونه بررسی می‌کند؟</h1>
       <p class="lede">اگر تبلیغات بازدید سایت شما را افزایش داده، اما سفارش‌ها به همان نسبت بیشتر نشده‌اند، بررسی می‌کنیم چه تعداد از بازدیدکنندگان محصول را به سبد اضافه می‌کنند، وارد مرحلهٔ پرداخت می‌شوند و خرید را کامل می‌کنند. این مقایسه نشان می‌دهد کدام مرحله به بررسی بیشتری نیاز دارد و کمک می‌کند تصمیم بگیرید اصلاح را از کجا آغاز کنید.</p>
     </div>
-    <div class="wrap" id="method">
-      <ol class="method-steps" role="list" aria-label="مراحل بررسی فروش">
-        <li class="method-step">
-          <span class="method-number" aria-hidden="true">۱</span>
-          <h2>هدف فروش را مشخص می‌کنیم</h2>
-          <p>با شما و تیم فروش دربارهٔ هدف، وضعیت فعلی و کارهایی که تاکنون انجام داده‌اید گفت‌وگو می‌کنیم.</p>
-          <p class="method-result"><strong>نتیجهٔ این مرحله</strong>مشخص می‌شود چه تغییری می‌خواهید و موفقیت را با چه شاخصی می‌سنجید.</p>
-        </li>
-        <li class="method-step">
-          <span class="method-number" aria-hidden="true">۲</span>
-          <h2>علت افت فروش را بررسی می‌کنیم</h2>
-          <p>با داده‌های موجود بررسی می‌کنیم مشتریان در کدام مرحله کمتر به قدم بعدی می‌رسند، از دیدن محصول تا تکمیل خرید.</p>
-          <p class="method-result"><strong>نتیجهٔ این مرحله</strong>می‌دانید بررسی را از کدام مرحله شروع کنید و برای یافتن علت به چه اطلاعاتی نیاز دارید.</p>
-        </li>
-        <li class="method-step">
-          <span class="method-number" aria-hidden="true">۳</span>
-          <h2>اولین تغییر را پیشنهاد می‌دهیم</h2>
-          <p>برای مرحله‌ای که در اولویت است، یک اقدام مشخص پیشنهاد می‌دهیم و تعیین می‌کنیم اثر آن چگونه سنجیده شود.</p>
-          <p class="method-result"><strong>نتیجهٔ این مرحله</strong>می‌دانید چه چیزی را اول تغییر دهید و اثر آن را با کدام شاخص بسنجید.</p>
-        </li>
-      </ol>
+    <div class="wrap">
+      <div class="mth" id="method">
+        <div class="gpanel mpanel">
+        <div class="gp-head">
+          <div class="gp-title"><span class="win-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>نقشه‌ی حل مسئله</span></div>
+          <div class="seg" id="seg" role="group" aria-label="مرحله‌ها" style="--s:0">
+            <span class="seg-thumb" aria-hidden="true"></span>
+            <button type="button" class="seg-btn" aria-pressed="true"><small>۰۱</small>شناخت نیاز</button>
+            <button type="button" class="seg-btn" aria-pressed="false"><small>۰۲</small>ساختار مسئله</button>
+            <button type="button" class="seg-btn" aria-pressed="false"><small>۰۳</small>یافتن راه‌حل</button>
+          </div>
+          <div class="gp-status"><span class="live" aria-hidden="true"></span><span id="segStatus"></span><button type="button" class="glass mpause" id="mPause" aria-pressed="false" aria-label="توقف حرکت نقشه"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 2h3v10H3zM8 2h3v10H8z"/></svg></button></div>
+        </div>
+        <div class="mmap-wrap">
+          <div class="mmap" id="mMap" dir="ltr" role="img" aria-label="نقشهٔ حل مسئله در سه مرحله: شناخت نیاز، ساختار مسئله و یافتن راه‌حل. فعالیت‌ها زیر هر مرحله و نتیجه‌ها در امتداد مسیر قرار دارند.">
+            <div class="mmap-in"><canvas id="mCanvas"></canvas></div>
+          </div>
+          <div class="map-legend" aria-hidden="true"><span><i class="lg-step"></i>فعالیت</span><span><i class="lg-on"></i>مرحلهٔ فعال</span><span><i class="lg-done"></i>مراحل طی‌شده</span><span><i class="lg-out"></i>خروجی مرحله</span><span class="map-hint">برای دیدن کل نقشه، افقی بکشید</span></div>
+        </div>
+        <div class="phases" id="phases"></div>
+        <div class="tool-detail mdetail" aria-live="polite">
+          <div class="md-meta"><span class="td-k" id="tdK"></span><span class="md-step" id="tdStep"></span></div>
+          <b id="tdName"></b>
+          <p id="tdText"></p>
+          <div class="md-nav"><button type="button" class="gbtn glass" id="mPrev">→ گام قبلی</button><button type="button" class="gbtn glass" id="mNext">گام بعدی ←</button></div>
+        </div>
+        <form class="gp-foot" id="labForm" action="#contact">
+          <label for="labInput">مسئله‌ی شما در یک جمله</label>
+          <input id="labInput" class="gp-input" type="text" placeholder="مثلاً: تبلیغات فعال است، اما فروش آنلاین رشد نمی‌کند">
+          <button type="submit" class="btn btn-primary btn-sm">ادامه در فرم مشاوره</button>
+        </form>
+      </div>
+      </div>
     </div>
   </section>
   <div class="wrap vbody">
@@ -1247,6 +1350,346 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
   /* project pages: every phase open on a wide screen */
   if (matchMedia('(min-width: 1024px)').matches) $$('details.phase').forEach((d) => { d.open = true; });
   tone(); bar();
+})();
+
+</script>
+<script>
+/* DOT’s · the problem-solving map (approach page) */
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const NS = 'http://www.w3.org/2000/svg';
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cl = (v) => Math.max(0, Math.min(1, v));
+  const mix = (a, b, f) => a + (b - a) * f;
+  const io = (v) => { v = cl(v); return v < 0.5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; };
+  const oC = (v) => 1 - Math.pow(1 - cl(v), 3);
+  const oQ = (v) => 1 - Math.pow(1 - cl(v), 5);
+  const ios = (v) => -(Math.cos(Math.PI * cl(v)) - 1) / 2;
+  const fa = (n) => String(n).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
+  const svg = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+  const store = { get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+
+  /* shared pointer (the cursor is the glowing goal-dot over dark areas) */
+  const ptr = { x: -1e4, y: -1e4, t: 0, v: 0, on: false };
+  addEventListener('pointermove', (e) => { const now = performance.now(); ptr.v = Math.hypot(e.clientX - ptr.x, e.clientY - ptr.y) / Math.max(8, now - ptr.t); ptr.x = e.clientX; ptr.y = e.clientY; ptr.t = now; ptr.on = true; }, { passive: true });
+  addEventListener('pointerdown', (e) => { ptr.x = e.clientX; ptr.y = e.clientY; ptr.on = true; }, { passive: true });
+  document.addEventListener('pointerleave', () => { ptr.on = false; });
+
+  /* comet: a dot with two trailing dots travelling along an SVG path (SMIL, zero JS cost) */
+  function comet(parent, d, dur, begin, color, r = 3, cls = '') {
+    const g = svg('g', { class: cls }, parent);
+    [[r, 1], [r * 0.7, 0.5], [r * 0.45, 0.25]].forEach(([rr, op], j) => {
+      const b = (begin - j * 0.09).toFixed(2) + 's';
+      const c = svg('circle', { r: rr, fill: color, 'fill-opacity': op, opacity: 0 }, g);
+      svg('animateMotion', { dur: dur + 's', begin: b, repeatCount: 'indefinite', keyPoints: '0;1;1', keyTimes: '0;.72;1', calcMode: 'spline', keySplines: '.45 0 .25 1;0 0 1 1', path: d }, c);
+      svg('animate', { attributeName: 'opacity', dur: dur + 's', begin: b, repeatCount: 'indefinite', values: '0;1;1;0', keyTimes: '0;.12;.7;.8' }, c);
+    });
+    return g;
+  }
+  /* a canvas that knows its CSS size and device pixel ratio */
+  function fitCanvas(cv) {
+    const r = cv.getBoundingClientRect(), dpr = Math.min(innerWidth < 860 ? 1.5 : 2, devicePixelRatio || 1);
+    if (cv.width !== Math.round(r.width * dpr) || cv.height !== Math.round(r.height * dpr)) { cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr); }
+    const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, W: r.width, H: r.height, rect: r };
+  }
+  function drawGoal(ctx, x, y, t, a) {
+    if (a < 0.02) return;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, 30);
+    g.addColorStop(0, `rgba(54,224,200,${0.55 * a})`); g.addColorStop(1, 'rgba(54,224,200,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 30, 0, 7); ctx.fill();
+    ctx.strokeStyle = `rgba(159,245,232,${0.6 * a})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, 13 + 1.5 * Math.sin(t * 2.2), 0, 7); ctx.stroke();
+    ctx.fillStyle = `rgba(249,245,236,${a})`; ctx.beginPath(); ctx.arc(x, y, 5, 0, 7); ctx.fill();
+  }
+  const visible = new Map();
+  const ioObs = new IntersectionObserver((es) => es.forEach((e) => visible.set(e.target, e.isIntersecting)), { rootMargin: '80px' });
+
+  function method() {
+    const cv = $('#mCanvas'); if (!cv) return;
+    const mapEl = $('#mMap'), inner = $('.mmap-in');
+    const PH = [
+      { fa: 'شناخت نیاز', en: 'Needs Brief', subs: [['انجام مصاحبه', 'Conduct Interview'], ['تعریف مسئله', 'Define Problem']], items: [
+        ['سه پرسش پایه', 'P3', 'پیش از هر جلسه سه چیز را روشن می‌کنیم: چه می‌خواهید، چه کسانی درگیرند، و موفقیت را با چه عددی می‌سنجیم.'],
+        ['فهرست پرسش‌ها', 'Questions', 'پرسش‌ها از قبل آماده است تا وقت جلسه صرف حدس زدن نشود.'],
+        ['مصاحبه', 'Interview', 'با شما، تیم فروش و در صورت نیاز چند مشتری گفت‌وگو می‌کنیم؛ حرف‌ها را می‌شنویم، نه فقط گزارش‌ها را.'],
+        ['پرسش‌نامه', 'Questionnaire', 'برای شنیدن صدای تعداد بیشتری از مشتریان و کارکنان، با چند پرسش کوتاه.']],
+        out: ['بیان بحران اصلی', 'خروجی این مرحله: مسئله به زبان خود شما، در یک جمله. مثلاً «تبلیغات فعال است، اما فروش آنلاین رشد نمی‌کند.»'] },
+      { fa: 'ساختار مسئله', en: 'Problem Structure', subs: [['ساختاردهی مسئله', 'Structure Problem'], ['اولویت‌بندی مسائل', 'Prioritize Issues']], items: [
+        ['فرضیه‌ی اولیه', 'Initial Hypothesis', 'از روز اول یک حدس آگاهانه می‌زنیم و بعد درستی‌اش را می‌سنجیم. این‌طور، وقت صرف تحلیل‌های بی‌هدف نمی‌شود.'],
+        ['آزمون سریع فرضیه', 'P3', 'هر فرضیه را با کمترین داده‌ی لازم و در کوتاه‌ترین زمان آزمایش می‌کنیم؛ پیش از هر تحلیل سنگین یا هزینه.'],
+        ['قاعده‌ی ۸۰/۲۰', '80/20', 'معمولاً بخش کوچکی از علت‌ها بیشترِ اثر را دارند. روی همان چند شاخه‌ای می‌مانیم که فروش را جابه‌جا می‌کنند.'],
+        ['جلسه‌ی اتاق سفید', 'White Room', 'پیش از دیدن داده‌ها، همه‌ی علت‌های ممکن را بی‌سانسور روی تخته می‌آوریم تا چیزی از قلم نیفتد.'],
+        ['MECE', 'MECE', 'مسئله را به شاخه‌هایی می‌شکنیم که هیچ‌کدام تکرار دیگری نیست و روی هم، همه‌ی علت‌ها را پوشش می‌دهند.']],
+        out: ['پیدا کردن مسئله‌ی اصلی', 'خروجی این مرحله: همان مسئله، این بار با عدد، مهلت و مرز روشن؛ چیزی که می‌شود سنجید.'] },
+      { fa: 'یافتن راه‌حل', en: 'Solution Development', subs: [['تحلیل مسائل و اجرای تحلیل', 'Develop Issue Analysis + Conduct Analysis'], ['جمع‌بندی یافته‌ها و ارائه‌ی پیشنهاد', 'Synthesize Findings + Develop Recommendations']], items: [
+        ['برنامه‌ی کار', 'Work Plan', 'کی، چه تحلیلی، با چه داده‌ای و با کدام متخصص؛ همه پیش از شروع روشن است.'],
+        ['بررسی فرضیات اشتباه', 'De-biasing', 'فرضیه‌های خودمان را عمداً به چالش می‌کشیم تا راهکار بر داده تکیه کند، نه بر سلیقه.'],
+        ['استفاده از تجربه و مطالعات انجام‌شده', 'Iterative Study', 'تحلیل، آزمون، اصلاح؛ چند دور، تا نتیجه قابل اتکا شود.'],
+        ['نیازسنجی‌های اتوماسیون', 'Synthesize', 'یافته‌ها را از نتیجه به جزئیات می‌چینیم: اول پاسخ، بعد دلیل.'],
+        ['ابزارهای مدیریتی نیازسنجی‌شده', 'Bain Management Tools', 'ابزارهای شناخته‌شده‌ی مدیریت، برای بودجه، کانال‌ها و شاخص‌ها.'],
+        ['راهکار پیشنهادی', 'Proposal', 'خروجی نهایی: راهکار، بودجه‌ی پیشنهادی، مسیر اجرا و شاخص‌های سنجش؛ همه به زبان شما.', 1]],
+        out: null }
+    ];
+    // every selectable step: the supporting activities, then the phase's output (a key point on the trajectory)
+    const ST = PH.map((ph) => ph.items.map((it) => ({ fa: it[0], en: it[1], d: it[2], out: !!it[3], ms: false })).concat(ph.out ? [{ fa: ph.out[0], en: '', d: ph.out[1], out: true, ms: true }] : []));
+    const LEN = ST.map((s) => s.length);
+
+    /* geometry of the reference, in diagram units: f runs along the flow (0 = start, right), c across it (negative = up) */
+    const PF = [0, 150, 360, 970], DF = [75, 255, 590], HH = [36, 54, 80], CS = 200;
+    const TR = [[0, -102], [75, -120], [150, -108], [255, -132], [360, -106], [590, -148], [970, -104]];
+    const MSN = ['گفت‌وگو برای راه‌حل', 'بیان بحران اصلی', 'پیدا کردن مسئله‌ی اصلی', 'راهکار پیشنهادی'];
+    const cat = (a, b, c, d, t) => 0.5 * (2 * b + (-a + c) * t + (2 * a - 5 * b + 4 * c - d) * t * t + (-a + 3 * b - 3 * c + d) * t * t * t);
+    const trail = [];
+    for (let i = 0; i < TR.length - 1; i++) {
+      const a = TR[Math.max(0, i - 1)], b = TR[i], c = TR[i + 1], d = TR[Math.min(TR.length - 1, i + 2)], n = Math.max(5, Math.floor((c[0] - b[0]) / 11));
+      for (let q = 0; q < n; q++) trail.push({ f: cat(a[0], b[0], c[0], d[0], q / n), c: cat(a[1], b[1], c[1], d[1], q / n), ox: 0, oy: 0, lit: 0, p: trail.length * 0.7 });
+    }
+    const MS = [0, 2, 4, 6].map((i, m) => ({ f: TR[i][0], c: TR[i][1], lit: m === 0 ? 1 : 0 }));
+    const sup = [];
+    PH.forEach((ph, s) => { const n = ph.items.length, span = PF[s + 1] - PF[s]; ph.items.forEach((it, i) => sup.push({ s, k: i, out: !!it[3], f: PF[s] + span * (i + 0.5) / n, c: CS + (i % 2 ? 9 : -5), x: -1, y: -1, vx: 0, vy: 0, lit: 0.12, line: 0, p: i * 1.9 + s })); });
+    const phL = PH.map(() => ({ lit: 0.2, done: 0 }));
+
+    /* controls */
+    const box = $('#phases'), segEl = $('#seg'), segBtns = $$('.seg-btn', segEl), prevB = $('#mPrev'), nextB = $('#mNext');
+    const cols = PH.map((ph, j) => {
+      const d = document.createElement('div'); d.className = 'ph';
+      d.innerHTML = `<button type="button" class="ph-head glass" aria-pressed="false"><small>مرحله‌ی ${fa(j + 1)} · <bdi class="t-en">${ph.en}</bdi> <span class="ph-done">· انجام شد</span></small><b>${ph.fa}</b><small>${ph.subs[0][0]} ← ${ph.subs[1][0]}</small></button><ul class="ph-tools">${ST[j].map((t) => `<li><button type="button" class="tool glass${t.out ? ' out' : ''}" aria-pressed="false"><i aria-hidden="true"></i><span>${t.fa}</span>${t.en && t.en !== t.fa ? `<bdi class="t-en">${t.en}</bdi>` : ''}</button></li>`).join('')}</ul>`;
+      box.appendChild(d); return d;
+    });
+
+    let seg = 0, tool = 0, wave = 0, waveF = 0, user = false, t = 0, last = performance.now(), hover = null, dtG = 0, G = null;
+    const targetF = () => PF[seg] + (PF[seg + 1] - PF[seg]) * (tool + 1) / LEN[seg];
+    const focusPhase = (smooth) => { if (!G || mapEl.scrollWidth <= mapEl.clientWidth + 2) return; mapEl.scrollTo({ left: G.X(DF[seg]) - mapEl.clientWidth / 2, behavior: smooth && !RM ? 'smooth' : 'auto' }); };
+    const set = (s, k = 0, byUser = false) => {
+      if (byUser) user = true;
+      const ch = s !== seg; if (ch) wave = 0;
+      seg = s; tool = k;
+      segEl.style.setProperty('--s', s);
+      segBtns.forEach((b, i) => { b.classList.toggle('sel', i === s); b.setAttribute('aria-pressed', i === s); });
+      cols.forEach((c, j) => {
+        c.classList.toggle('on', j === s); c.classList.toggle('done', j < s);
+        const hd = $('.ph-head', c); hd.classList.toggle('on', j === s); hd.setAttribute('aria-pressed', j === s);
+        $$('.tool', c).forEach((b, i) => { const on = j === s && i === k; b.classList.toggle('on', on); b.classList.toggle('done', j < s || (j === s && i < k)); b.setAttribute('aria-pressed', on); });
+      });
+      const st = ST[s][k], isOut = k === LEN[s] - 1;
+      $('#segStatus').textContent = isOut ? `خروجی مرحله‌ی ${fa(s + 1)} از ۳` : `مرحله‌ی ${fa(s + 1)} از ۳ · مقصد: ${MSN[s + 1]}`;
+      $('#tdK').textContent = `مرحله‌ی ${fa(s + 1)} · ${PH[s].fa}`;
+      $('#tdStep').textContent = isOut ? 'خروجی این مرحله' : `فعالیت ${fa(k + 1)} از ${fa(PH[s].items.length - (PH[s].out ? 0 : 1))}`;
+      $('#tdName').innerHTML = st.fa + (st.en && st.en !== st.fa ? ` <bdi class="t-en">${st.en}</bdi>` : '');
+      $('#tdText').textContent = st.d;
+      prevB.disabled = s === 0 && k === 0; nextB.disabled = s === PH.length - 1 && isOut;
+      if (RM) { wave = k; waveF = targetF(); }
+      if (ch) focusPhase(byUser || true);
+      draw();
+    };
+    const step = (d, byUser) => { let s = seg, k = tool + d; if (k >= LEN[s]) { s = (s + 1) % PH.length; k = 0; } else if (k < 0) { s = Math.max(0, s - 1); k = LEN[s] - 1; } set(s, k, byUser); };
+    segBtns.forEach((b, i) => b.addEventListener('click', () => set(i, 0, true)));
+    cols.forEach((c, j) => { $('.ph-head', c).addEventListener('click', () => set(j, 0, true)); $$('.tool', c).forEach((b, i) => b.addEventListener('click', () => set(j, i, true))); });
+    prevB.addEventListener('click', () => step(-1, true)); nextB.addEventListener('click', () => step(1, true));
+
+    /* size: the diagram keeps its proportions; on narrow screens it scrolls sideways instead of shrinking */
+    const size = () => { const w = inner.getBoundingClientRect().width, k = Math.min(1.22, (w - 96) / 970); inner.style.height = Math.round(30 + (172 + 248) * k) + 'px'; };
+    size(); addEventListener('resize', () => { size(); draw(); focusPhase(false); });
+
+    const glow = (ctx, x, y, r, rgb, a) => { if (a < 0.02) return; const g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, `rgba(${rgb},${a})`); g.addColorStop(1, `rgba(${rgb},0)`); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); };
+    const FONT = (w, px) => `${w} ${px}px Estedad, Vazirmatn, Tahoma, sans-serif`;
+    const text = (ctx, s, x, y, W, latin) => { ctx.direction = latin ? 'ltr' : 'rtl'; const w = ctx.measureText(s).width; x = Math.max(w / 2 + 6, Math.min(W - w / 2 - 6, x)); halo(ctx, s, x, y); };
+    const halo = (ctx, s, x, y) => { ctx.save(); ctx.strokeStyle = 'rgba(11,12,12,.78)'; ctx.lineWidth = 4; ctx.lineJoin = 'round'; ctx.strokeText(s, x, y); ctx.restore(); ctx.fillText(s, x, y); };
+    const pill = (ctx, s, x, y, W) => {
+      ctx.font = FONT(700, 13); ctx.direction = 'rtl';
+      const w = ctx.measureText(s).width + 26, hh = 30; x = Math.max(w / 2 + 8, Math.min(W - w / 2 - 8, x));
+      ctx.fillStyle = 'rgba(13,15,15,.9)'; ctx.strokeStyle = 'rgba(159,245,232,.5)'; ctx.lineWidth = 1;
+      ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x - w / 2, y - hh / 2, w, hh, 15); else ctx.rect(x - w / 2, y - hh / 2, w, hh); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#F9F5EC'; ctx.fillText(s, x, y + 1);
+    };
+    // a point on diamond s's top (dir -1) or bottom (dir 1) edge at flow position f
+    const edgeC = (s, f, dir) => { const h2 = HH[s] * dir; return f <= DF[s] ? h2 * (f - PF[s]) / (DF[s] - PF[s]) : h2 * (PF[s + 1] - f) / (PF[s + 1] - DF[s]); };
+
+    function draw() {
+      const { ctx, W, H, rect } = fitCanvas(cv); if (!W) return;
+      const k = Math.min(1.22, (W - 96) / 970), ox = (W - 970 * k) / 2, X = (f) => W - ox - f * k, Y = (c) => 14 + (c + 172) * k;
+      G = { X, Y, k };
+      const dt = dtG, ease = RM ? 1 : Math.min(1, dt * 3.2);
+      wave = RM ? tool : wave + Math.sign(tool - wave) * Math.min(Math.abs(tool - wave), dt * 3.5);
+      const tf = targetF(); waveF = RM ? tf : waveF + Math.sign(tf - waveF) * Math.min(Math.abs(tf - waveF), dt * 260);
+      const px = ptr.x - rect.left, py = ptr.y - rect.top, inside = ptr.on && px >= 0 && py >= 0 && px <= W && py <= H && !RM;
+      const pull = (x, y, R, s) => { if (!inside) return [0, 0]; const dx = px - x, dy = py - y, d = Math.hypot(dx, dy); if (d >= R) return [0, 0]; const q = Math.pow(1 - d / R, 1.6) * s; return [dx * q, dy * q]; };
+      const selSup = sup.find((n) => n.s === seg && n.k === tool);
+
+      /* light levels */
+      phL.forEach((L, s) => { L.lit += ((s === seg ? 1 : s < seg ? 0.55 : 0.18) - L.lit) * ease; L.done += ((s < seg ? 1 : 0) - L.done) * ease; });
+      trail.forEach((d) => { d.lit += ((d.f <= waveF + 0.5 ? 1 : 0) - d.lit) * ease; });
+      MS.forEach((m, i) => { if (i) m.lit += ((waveF >= m.f - 0.5 ? 1 : 0) - m.lit) * ease; });
+      sup.forEach((n) => {
+        let tg = 0.14, ln = 0.04;
+        if (n.s < seg) { tg = n.out ? 1 : 0.55; ln = 0.4; }
+        else if (n.s === seg) { const on = n.k <= wave + 0.01; tg = on ? (n === selSup ? 1 : 0.8) : 0.3; ln = on ? 1 : 0.1; }
+        n.lit += (tg - n.lit) * ease; n.line += (ln - n.line) * ease;
+      });
+
+      ctx.clearRect(0, 0, W, H); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+
+      /* diamonds: glass fill, open/close halves, outline, and the lit part of their edges */
+      PH.forEach((ph, s) => {
+        const L = phL[s], x0 = X(PF[s]), xm = X(DF[s]), x1 = X(PF[s + 1]), yt = Y(-HH[s]), yb = Y(HH[s]), y0 = Y(0);
+        const poly = () => { ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(xm, yt); ctx.lineTo(x1, y0); ctx.lineTo(xm, yb); ctx.closePath(); };
+        poly(); ctx.fillStyle = `rgba(249,245,236,${0.03 + 0.08 * L.lit})`; ctx.fill();
+        if (s === seg) { // the half the visitor is in glows a little more: opening first, then closing
+          const second = waveF > DF[s]; ctx.beginPath();
+          if (!second) { ctx.moveTo(x0, y0); ctx.lineTo(xm, yt); ctx.lineTo(xm, yb); } else { ctx.moveTo(xm, yt); ctx.lineTo(x1, y0); ctx.lineTo(xm, yb); }
+          ctx.closePath(); ctx.fillStyle = 'rgba(54,224,200,.07)'; ctx.fill();
+          ctx.save(); poly(); ctx.clip(); glow(ctx, xm, y0, HH[s] * k * 1.8, '54,224,200', 0.16 * L.lit); ctx.restore();
+        }
+        poly(); ctx.strokeStyle = s === seg ? "rgba(131,243,215,.8)" : s < seg ? "rgba(156,184,236,.64)" : "rgba(249,245,236,.32)"; ctx.lineWidth = s === seg ? 1.6 : 1; ctx.stroke();
+        ctx.setLineDash([1, 4]); ctx.beginPath(); ctx.moveTo(xm, yt); ctx.lineTo(xm, yb); ctx.strokeStyle = `rgba(249,245,236,${0.25 + 0.3 * L.lit})`; ctx.stroke(); ctx.setLineDash([]);
+        const fEnd = Math.min(waveF, PF[s + 1]);
+        if (fEnd > PF[s] + 0.5) {
+          [-1, 1].forEach((dir) => {
+            const pts = [[PF[s], 0]]; if (fEnd > DF[s]) pts.push([DF[s], HH[s] * dir]); pts.push([fEnd, edgeC(s, fEnd, dir)]);
+            const line = () => { ctx.beginPath(); pts.forEach(([f, c], i) => (i ? ctx.lineTo(X(f), Y(c)) : ctx.moveTo(X(f), Y(c)))); };
+            const color = s < seg ? "156,184,236" : "131,243,215";
+            line(); ctx.strokeStyle = `rgba(${color},.22)`; ctx.lineWidth = 4; ctx.stroke();
+            line(); ctx.strokeStyle = `rgba(${color},.85)`; ctx.lineWidth = 1.4; ctx.stroke();
+          });
+        }
+        // the light front and two comets travelling the active diamond (one over the top, one under)
+        if (s === seg && !RM) {
+          const span = PF[s + 1] - PF[s], per = 2.6 + span / 260;
+          [0, 0.5].forEach((o, j) => { const q = ((t / per) + o) % 1, f = PF[s] + span * q, c = edgeC(s, f, j ? 1 : -1); glow(ctx, X(f), Y(c), 9, '249,245,236', 0.7 * Math.sin(Math.PI * q)); });
+        }
+      });
+
+      /* dashed ties from the trajectory's key points down to the diamonds' joints */
+      ctx.setLineDash([2, 5]); ctx.lineWidth = 1;
+      MS.forEach((m) => { ctx.strokeStyle = `rgba(249,245,236,${0.18 + 0.4 * m.lit})`; ctx.beginPath(); ctx.moveTo(X(m.f), Y(m.c) + 8); ctx.lineTo(X(m.f), Y(0) - 4); ctx.stroke(); });
+      ctx.setLineDash([]);
+
+      /* the dotted trajectory: lights up dot by dot up to where the visitor is */
+      let head = null;
+      trail.forEach((d) => {
+        const bx = X(d.f) + (RM ? 0 : 1.2 * Math.sin(t * 0.8 + d.p)), by = Y(d.c) + (RM ? 0 : 1.2 * Math.cos(t * 0.6 + d.p));
+        const [tx, ty] = pull(bx, by, 90, 0.25); d.ox += (tx - d.ox) * 0.12; d.oy += (ty - d.oy) * 0.12;
+        const x = bx + d.ox, y = by + d.oy;
+        ctx.fillStyle = d.lit > 0.5 ? `rgba(159,245,232,${0.35 + 0.6 * d.lit})` : `rgba(249,245,236,${0.3 + 0.3 * d.lit})`;
+        ctx.beginPath(); ctx.arc(x, y, 1.3 + 0.6 * d.lit, 0, 7); ctx.fill();
+        if (d.f <= waveF) head = [x, y];
+      });
+      if (head && !RM) glow(ctx, head[0], head[1], 16, '54,224,200', 0.5);
+
+      /* key points: start (cream), outputs (wine) */
+      MS.forEach((m, i) => {
+        const x = X(m.f), y = Y(m.c), selMs = i > 0 && ((i - 1 === seg && tool === LEN[seg] - 1) || (i === 3 && seg === 2 && tool === LEN[2] - 1));
+        if (i === 0) { ctx.fillStyle = '#F9F5EC'; ctx.beginPath(); ctx.arc(x, y, 4.5, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(249,245,236,.4)'; ctx.beginPath(); ctx.arc(x, y, 10, 0, 7); ctx.stroke(); return; }
+        glow(ctx, x, y, i === 3 ? 34 : 26, i === 3 ? '54,224,200' : '240,169,156', 0.45 * m.lit);
+        ctx.fillStyle = `rgba(255,201,117,${0.65 + 0.35 * m.lit})`; ctx.beginPath(); ctx.arc(x, y, 6.5, 0, 7); ctx.fill();
+        ctx.strokeStyle = `rgba(249,245,236,${0.4 + 0.6 * m.lit})`; ctx.lineWidth = 1.3; ctx.stroke();
+        ctx.fillStyle = `rgba(249,245,236,${0.35 + 0.65 * m.lit})`; ctx.beginPath(); ctx.arc(x, y, 2, 0, 7); ctx.fill();
+        if (selMs) { ctx.strokeStyle = 'rgba(159,245,232,.8)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, 14 + (RM ? 0 : 1.4 * Math.sin(t * 2)), 0, 7); ctx.stroke(); }
+        else if (hover && hover.ms === i) { ctx.strokeStyle = 'rgba(249,245,236,.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, 12, 0, 7); ctx.stroke(); }
+      });
+
+      /* supporting activities: hang from the diamond's lower joint, lean to the selected one and to the cursor */
+      sup.forEach((n) => {
+        const act = n.s === seg; let tx = X(n.f), ty = Y(n.c);
+        if (!RM) { tx += 2.4 * Math.sin(t * 0.7 + n.p); ty += 2.4 * Math.cos(t * 0.55 + n.p * 1.3); }
+        if (act && selSup && n !== selSup) { tx += (X(selSup.f) - tx) * 0.08; ty += (Y(selSup.c) - ty) * 0.06; }
+        const [qx, qy] = pull(tx, ty, 110, 0.32); tx += qx; ty += qy;
+        if (n.x < 0 || RM) { n.x = tx; n.y = ty; n.vx = n.vy = 0; }
+        else { n.vx = (n.vx + (tx - n.x) * 0.07) * 0.8; n.vy = (n.vy + (ty - n.y) * 0.07) * 0.8; n.x += n.vx; n.y += n.vy; }
+      });
+      PH.forEach((ph, s) => {
+        const list = sup.filter((n) => n.s === s), jx = X(DF[s]), jy = Y(HH[s]);
+        for (let i = 0; i < list.length - 1; i++) { const a = list[i], b = list[i + 1]; ctx.strokeStyle = `rgba(249,245,236,${0.06 + 0.2 * Math.min(a.line, b.line)})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+        list.forEach((n) => {
+          const mx = (n.x + jx) / 2 + (n.x - jx) * 0.15, my = (n.y + jy) / 2;
+          const path = () => { ctx.beginPath(); ctx.moveTo(jx, jy); ctx.quadraticCurveTo(mx, my, n.x, n.y); };
+          path(); ctx.strokeStyle = `rgba(249,245,236,${0.08 + 0.3 * n.line})`; ctx.lineWidth = 0.9; ctx.stroke();
+          if (n.line > 0.45 && s === seg) { path(); ctx.strokeStyle = `rgba(54,224,200,${(n.line - 0.45) * 0.55})`; ctx.lineWidth = 3; ctx.stroke(); }
+        });
+        ctx.fillStyle = `rgba(249,245,236,${0.4 + 0.5 * phL[s].lit})`; ctx.beginPath(); ctx.arc(jx, jy, 2.4, 0, 7); ctx.fill();
+      });
+      sup.forEach((n) => {
+        const isSel = n === selSup, a = n.lit;
+        if (n.out) {
+          glow(ctx, n.x, n.y, 26, '240,169,156', 0.38 * a);
+          ctx.fillStyle = `rgba(255,201,117,${0.65 + 0.35 * a})`; ctx.beginPath(); ctx.arc(n.x, n.y, 6.5, 0, 7); ctx.fill();
+          ctx.strokeStyle = `rgba(249,245,236,${0.35 + 0.65 * a})`; ctx.lineWidth = 1.3; ctx.stroke();
+        } else {
+          glow(ctx, n.x, n.y, 16, '54,224,200', 0.45 * Math.max(0, a - 0.3));
+          ctx.fillStyle = `rgba(249,245,236,${0.22 + 0.78 * a})`; ctx.beginPath(); ctx.arc(n.x, n.y, 3 + 1.6 * a, 0, 7); ctx.fill();
+        }
+        if (isSel) { glow(ctx, n.x, n.y, 32, n.out ? '255,201,117' : '54,224,200', 0.5); ctx.strokeStyle = 'rgba(159,245,232,.75)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(n.x, n.y, 14 + (RM ? 0 : 1.4 * Math.sin(t * 2)), 0, 7); ctx.stroke(); }
+        else if (hover && hover.n === n) { ctx.strokeStyle = 'rgba(249,245,236,.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(n.x, n.y, 11, 0, 7); ctx.stroke(); }
+      });
+
+      /* words — one type scale (16/800 titles · 12–12.5 labels · 10.5 latin caps), and every label sits on a plate
+         or a halo so that no line ever runs through text */
+      const clampX = (x, w) => Math.max(w / 2 + 6, Math.min(W - w / 2 - 6, x));
+      const plate = (x, y, w, hh, on, tone) => { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x - w / 2, y - hh / 2, w, hh, Math.min(14, hh / 2)); else ctx.rect(x - w / 2, y - hh / 2, w, hh);
+        ctx.fillStyle = 'rgba(13,15,15,.86)'; ctx.fill(); ctx.strokeStyle = on ? `rgba(${tone},.5)` : 'rgba(249,245,236,.1)'; ctx.lineWidth = 1; ctx.stroke(); };
+      const LS = (v) => { if ('letterSpacing' in ctx) ctx.letterSpacing = v; };
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      // key points: a chip under each dot, toned like the dot (wine for outputs, teal for the final proposal)
+      MS.forEach((m, i) => {
+        const on = i === 0 || m.lit > 0.5; ctx.direction = 'rtl'; ctx.font = FONT(on ? 700 : 500, 12.5);
+        const w = ctx.measureText(MSN[i]).width + 24, x = clampX(X(m.f), w), y = Y(m.c) + 27;
+        plate(x, y, w, 28, on && i > 0, i === 3 ? '159,245,232' : '240,169,156');
+        ctx.fillStyle = `rgba(249,245,236,${on ? 0.96 : 0.66})`; ctx.fillText(MSN[i], x, y + 1);
+      });
+      // open / close, inside each diamond
+      ctx.font = FONT(500, 11); ctx.direction = 'rtl';
+      PH.forEach((ph, s) => {
+        const a = s === seg ? 0.96 : s < seg ? 0.74 : 0.58, jx = X(DF[s]), jy = Y(HH[s]) + 13;
+        // sub-processes sit either side of the diamond's lower joint, each under its own half
+        ctx.direction = 'rtl'; ctx.font = FONT(600, 12); ctx.fillStyle = `rgba(249,245,236,${a})`;
+        ctx.textAlign = 'left'; halo(ctx, ph.subs[0][0], jx + 14, jy);
+        ctx.textAlign = 'right'; halo(ctx, ph.subs[1][0], jx - 14, jy);
+        ctx.textAlign = 'center';
+        // phase plate: stage number · name · reference term
+        const y = Y(140); ctx.font = FONT(800, 16); const w1 = ctx.measureText(ph.fa).width;
+        ctx.font = "600 10.5px 'DM Sans', sans-serif"; LS('0.08em'); const w2 = ctx.measureText(ph.en.toUpperCase()).width; LS('0px');
+        const w = Math.max(w1, w2) + 36, x = clampX(jx, w);
+        plate(x, y, w, 64, s === seg, '159,245,232');
+        ctx.font = FONT(600, 11); ctx.fillStyle = s === seg ? 'rgba(159,245,232,.95)' : `rgba(249,245,236,${a * 0.72})`; ctx.fillText(`مرحله‌ی ${fa('0' + (s + 1))}`, x, y - 19);
+        ctx.font = FONT(800, 16); ctx.fillStyle = `rgba(249,245,236,${a})`; ctx.fillText(ph.fa, x, y + 1);
+        ctx.direction = 'ltr'; ctx.font = "600 10.5px 'DM Sans', sans-serif"; LS('0.08em'); ctx.fillStyle = `rgba(249,245,236,${a * 0.62})`; ctx.fillText(ph.en.toUpperCase(), x, y + 20); LS('0px');
+      });
+      if (selSup) pill(ctx, ST[selSup.s][selSup.k].fa, selSup.x, selSup.y + 32, W);
+    }
+
+    /* pointer on the map: hover highlights; click picks an activity, a key point, or a whole phase */
+    const pick = (e) => {
+      if (!G) return null; const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      let best = null, bd = 24;
+      sup.forEach((n) => { const d = Math.hypot(n.x - x, n.y - y); if (d < bd) { bd = d; best = { n, s: n.s, k: n.k }; } });
+      MS.forEach((m, i) => { if (!i) return; const d = Math.hypot(G.X(m.f) - x, G.Y(m.c) - y); if (d < bd) { bd = d; best = { ms: i, s: i - 1, k: LEN[i - 1] - 1 }; } });
+      if (best) return best;
+      const f = (r.width - (r.width - 970 * G.k) / 2 - x) / G.k, c = (y - 14) / G.k - 172;
+      for (let s = 0; s < 3; s++) if (f >= PF[s] && f <= PF[s + 1] && Math.abs(c) <= Math.abs(edgeC(s, f, 1)) + 6) return { s, k: 0, dia: 1 };
+      return null;
+    };
+    cv.addEventListener('pointermove', (e) => { hover = pick(e); cv.style.cursor = hover ? 'pointer' : 'default'; });
+    cv.addEventListener('pointerleave', () => { hover = null; });
+    cv.addEventListener('click', (e) => { const h2 = pick(e); if (h2) set(h2.s, h2.k, true); });
+
+    ioObs.observe(cv);
+    let inView = false;
+    new IntersectionObserver((es) => es.forEach((e) => { inView = e.isIntersecting; }), { threshold: 0.4 }).observe(cv);
+    set(0, 0); requestAnimationFrame(() => focusPhase(false));
+    if (!RM) {
+      let mPaused = false; const mpb = document.getElementById('mPause');
+      if (mpb) mpb.addEventListener('click', () => { mPaused = !mPaused; mpb.setAttribute('aria-pressed', mPaused); mpb.setAttribute('aria-label', mPaused ? 'ادامه‌ی حرکت نقشه' : 'توقف حرکت نقشه'); mpb.querySelector('path').setAttribute('d', mPaused ? 'M3 2l9 5-9 5z' : 'M3 2h3v10H3zM8 2h3v10H8z'); });
+      (function loop(now) { dtG = Math.max(0, Math.min(0.05, (now - last) / 1000)); last = now; requestAnimationFrame(loop); if (visible.get(cv) === false) return; if (!mPaused) t += dtG; draw(); })(last);
+      setInterval(() => { if (inView && !user && !mPaused && document.visibilityState === 'visible') step(1, false); }, 3200);
+    }
+  }
+
+  method();
+  const lab = document.getElementById('labForm');
+  if (lab) lab.addEventListener('submit', (e) => { e.preventDefault(); const v = document.getElementById('labInput').value.trim(); if (v) document.getElementById('f-msg').value = v;
+    document.getElementById('contact').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); setTimeout(() => document.getElementById('f-name').focus({ preventScroll: true }), 700); });
 })();
 
 </script>
