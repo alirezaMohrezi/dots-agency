@@ -1036,12 +1036,9 @@ body.intro-on .top{opacity:0}
 .resume-provider ul{margin:0;padding:0;padding-inline-start:calc(66px + 1em);list-style:disc outside;color:var(--ink);font-size:.94rem;line-height:1.8}
 .resume-provider ul > li::marker{color:var(--green)}
 .resume-provider ul li+li{margin-block-start:4px}
-.resume-traits-layout{display:grid;grid-template-columns:clamp(68px,9vw,110px) minmax(0,1fr);align-items:center;gap:clamp(12px,1.7vw,20px)}
-.resume-ring{position:relative;aspect-ratio:1;margin:6px;border:1px solid var(--green);border-radius:50%;background:radial-gradient(circle,var(--green) 0 9%,var(--tint) 10% 28%,transparent 29%)}
-.resume-ring i{position:absolute;inset:0;transform:rotate(var(--angle))}
-.resume-ring i::before{content:"";position:absolute;inset-block-start:0;left:50%;transform:translate(-50%,-50%);inline-size:9px;block-size:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px var(--cream)}
 .resume-trait-list{list-style:none;margin:0;padding:0;display:grid}
-.resume-trait-list li{padding:7px 0;border-block-end:1px solid var(--line);font-size:.94rem;line-height:1.6}
+.resume-trait-list li{display:grid;gap:6px;--skill-level:60%;padding:7px 0;border-block-end:1px solid var(--line);font-size:.94rem;line-height:1.6}
+.resume-trait-list li::after{content:"";display:block;block-size:6px;border-radius:999px;background:linear-gradient(to left,var(--green) var(--skill-level),var(--line) var(--skill-level))}
 .resume-trait-list li:last-child{border-block-end:0}
 .resume-technical{grid-column:1 / -1}
 .resume-abilities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
@@ -1194,18 +1191,13 @@ body.intro-on .top{opacity:0}
 
           <section class="resume-traits" aria-labelledby="resume-traits">
             <h4 id="resume-traits">مهارت‌های نرم</h4>
-            <div class="resume-traits-layout">
-              <div class="resume-ring" aria-hidden="true">
-                <i style="--angle:0deg"></i><i style="--angle:72deg"></i><i style="--angle:144deg"></i><i style="--angle:216deg"></i><i style="--angle:288deg"></i>
-              </div>
-              <ul class="resume-trait-list" role="list">
-                <li>تفکر خلاق</li>
-                <li>تفکر سیستمی</li>
-                <li>تفکر فرصت‌جویی</li>
-                <li>تفکر آینده‌پژوهی</li>
-                <li>تفکر سیستم‌سازی</li>
-              </ul>
-            </div>
+            <ul class="resume-trait-list" role="list">
+              <li>تفکر خلاق</li>
+              <li>تفکر سیستمی</li>
+              <li>تفکر فرصت‌جویی</li>
+              <li>تفکر آینده‌پژوهی</li>
+              <li>تفکر سیستم‌سازی</li>
+            </ul>
           </section>
 
           <section class="resume-technical" aria-labelledby="resume-technical">
