@@ -1517,207 +1517,70 @@ void main(){
   gl_FragColor = vec4(col, 1.);
 }`;
   function intro() {
-    const $ = (s) => document.querySelector(s);
-    const NS = 'http://www.w3.org/2000/svg';
-    const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const cl = (v) => Math.max(0, Math.min(1, v));
-    const mix = (a, b, f) => a + (b - a) * f;
-    const oC = (v) => 1 - Math.pow(1 - cl(v), 3);
-    const ios = (v) => -(Math.cos(Math.PI * cl(v)) - 1) / 2;
-    const spring = (tau, w, z) => { if (tau <= 0) return 0; const wd = w * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w * tau) * (Math.cos(wd * tau) + (z * w / wd) * Math.sin(wd * tau)); };
-    const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
-    const f = (v) => v.toFixed(2);
-
-    const root = $('#intro');
-      if (!root) return;
-      const end = () => { root.classList.add('gone'); document.body.classList.remove('intro-on'); };
-      // plays once per visitor and never with reduced motion, so returning visitors land straight on the content
-      let seen = false; try { seen = localStorage.getItem('dots-intro-v4') === '1'; localStorage.setItem('dots-intro-v4', '1'); } catch (e) {}
-      if (seen || RM) { end(); return; }
-      document.body.classList.add('intro-on');
-      const fg = $('#i-fg'), defs = $('#i-fg defs'), sym = $('#i-sym'), outline = $('#i-outline'), core = $('#i-core'), word = $('#i-word'), skip = $('#i-skip');
-      const chipMark = document.querySelector('.chip svg'), chipWord = document.querySelector('.chip .word');
-    const prog = [...document.querySelectorAll('#i-prog b')];
-
-    /* ── a field of many dots; three of them are chosen ── */
-    let seed = 11; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
-    const FIELD = Array.from({ length: 64 }, () => ({ u: rnd(), v: rnd(), ph: rnd() * 6.28, sp: 0.4 + rnd() * 0.6 }));
-    const CHOSEN = [{ u: 0.3, v: 0.3 }, { u: 0.4, v: 0.72 }, { u: 0.7, v: 0.62 }];   // they join the field as ordinary dots
-    CHOSEN.forEach((c) => { c.ph = rnd() * 6.28; c.sp = 0.5; });
-    const ALL = FIELD.concat(CHOSEN);
-    const PAIRS = [];
-    ALL.forEach((a, i) => ALL.forEach((b, j) => { if (j > i && Math.hypot((a.u - b.u) * 1.6, a.v - b.v) < 0.16) PAIRS.push([i, j]); }));
-    const linkEls = PAIRS.map(() => el('line', {}, $('#i-links')));
-    const fieldEls = ALL.map(() => el('circle', { r: 1.3 }, $('#i-field')));
-
-    /* ── each chosen dot carries a soft light and a short tail ── */
-    const grad = (id, c0, c1, a) => { const g = el('linearGradient', { id, gradientUnits: 'userSpaceOnUse' }, defs); el('stop', { offset: 0, 'stop-color': c0, 'stop-opacity': 0 }, g); el('stop', { offset: 0.6, 'stop-color': c0, 'stop-opacity': a * 0.55 }, g); el('stop', { offset: 1, 'stop-color': c1, 'stop-opacity': a }, g); return g; };
-    const halo = (id, c) => { const g = el('radialGradient', { id }, defs); el('stop', { offset: 0, 'stop-color': c, 'stop-opacity': 0.8 }, g); el('stop', { offset: 0.35, 'stop-color': c, 'stop-opacity': 0.3 }, g); el('stop', { offset: 1, 'stop-color': c, 'stop-opacity': 0 }, g); return g; };
-    const setGrad = (g, pts) => { const a = pts[0], b = pts[pts.length - 1]; g.setAttribute('x1', a.x); g.setAttribute('y1', a.y); g.setAttribute('x2', b.x); g.setAttribute('y2', b.y); };
-    const HUES = [['#D4AF37', '#FFE7A3'], ['#006E62', '#8FF0E0'], ['#791E23', '#F0A99C']];
-    const lanes = HUES.map((h, i) => ({ rg: grad('irg' + i, h[0], h[1], 0.9), hist: [], rib: el('path', { stroke: `url(#irg${i})` }, $('#i-ribbons')), halo: (halo('ihh' + i, h[1]), el('circle', { fill: `url(#ihh${i})`, r: 0 }, $('#i-halos'))), dot: el('circle', { r: 0 }, $('#i-dots')) }));
-    const smooth = (p) => { let d = `M${f(p[0].x)} ${f(p[0].y)}`; for (let k = 1; k < p.length - 1; k++) d += `Q${f(p[k].x)} ${f(p[k].y)} ${f((p[k].x + p[k + 1].x) / 2)} ${f((p[k].y + p[k + 1].y) / 2)}`; const q = p[p.length - 1]; return d + `L${f(q.x)} ${f(q.y)}`; };
-    const push = (l, x, y) => { const p = l.hist[l.hist.length - 1]; if (p && p.t > t) l.hist = []; if (!p || Math.hypot(p.x - x, p.y - y) > 0.5) l.hist.push({ x, y, t }); while (l.hist.length && t - l.hist[0].t > 0.5) l.hist.shift(); };
-    function drawTail(l, opacity, width) {
-      const tail = l.hist.filter((p) => t - p.t <= 0.38);
-      if (tail.length > 3 && opacity > 0.01) { l.rib.setAttribute('d', smooth(tail)); setGrad(l.rg, tail); l.rib.setAttribute('stroke-width', width); l.rib.style.opacity = opacity; }
-      else l.rib.style.opacity = 0;
-    }
-
-    const axes = [0, 1].map(() => el('line', {}, $('#i-axes')));
-    const gOut = Array.from({ length: 4 }, () => el('line', {}, $('#i-gridOut')));
-    const gIn = Array.from({ length: 4 }, () => el('line', {}, $('#i-gridIn')));
-
-    /* timeline (seconds) */
-    const T = { field: [0, 0.7], pick: [0.7, 1.25], dim: [1.15, 1.9], glide: 1.25, orb: [1.6, 2.45], collapse: [2.45, 2.75], toCorner: 2.6,
-      axes: [2.65, 3.1], grid: [2.9, 3.35], outline: [3.15, 3.6], fill: [3.45, 3.85], cove: 3.85, off: [4.1, 4.45],
-      A0: 4.35, L0: 4.65, L1: 5.95, word: [5.6, 6.1], END: 6.15 };
-    const SPEED = matchMedia('(max-width: 860px)').matches ? 3 : 1.35;   // phones: the signature moment stays near 2s
-    let t = RM ? T.END - 0.6 : 0, last = performance.now(), W = 0, H = 0, dpr = 1;
-    let L = [-0.55, -0.83], Lt = [-0.55, -0.83];
-
-    /* ── WebGL glass ── */
-    const cv = $('#i-glass'), gl = cv.getContext('webgl', { antialias: false, alpha: false });
-    let U = null;
-    if (gl) {
-      const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; };
-      try {
-        const pr = gl.createProgram();
-        gl.attachShader(pr, sh(gl.VERTEX_SHADER, 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}'));
-        gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, INTRO_FS));
-        gl.linkProgram(pr); gl.useProgram(pr);
-        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-        const a = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
-        U = {}; ['uRes', 'uDpr', 'uT', 'uLaunch', 'uRad', 'uPane', 'uMark', 'uL', 'uB', 'uR'].forEach((n) => { U[n] = gl.getUniformLocation(pr, n); });
-      } catch (err) { console.warn(err); U = null; }
-    }
-    if (!U) cv.style.display = 'none';
-
-    function resize() {
-      W = innerWidth; H = innerHeight; dpr = Math.min(1.75, devicePixelRatio || 1);
-      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
-      if (U) gl.viewport(0, 0, cv.width, cv.height);
-      fg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    
-    }
-    addEventListener('resize', resize); resize();
-    const skipTo = () => { t = Math.max(t, T.END); };
-    skip.addEventListener('click', skipTo); addEventListener('wheel', skipTo, { passive: true, once: true }); addEventListener('touchstart', skipTo, { passive: true, once: true }); addEventListener('keydown', skipTo, { once: true });
-    const onMove = (ev) => { const x = -0.55 + (ev.clientX / W - 0.5) * 0.7, y = -0.83 + (ev.clientY / H - 0.5) * 0.5, l = Math.hypot(x, y); Lt = [x / l, y / l]; };
-      addEventListener('pointermove', onMove);
-
-    const B = new Float32Array(24), R = new Float32Array(12);
-
+    const root = $('#intro'), canvas = $('#i-glass'), mark = $('.chip svg');
+    const finish = () => { root.classList.add('gone'); document.body.classList.remove('intro-on'); };
+    const replay = new URLSearchParams(location.search).get('intro') === '1';
+    let seen = false;
+    try { seen = localStorage.getItem('dots-intro-solid-v1') === '1'; } catch {}
+    const ctx = canvas.getContext('2d');
+    if (!ctx || !mark || RM || (seen && !replay)) { finish(); return; }
+    try { localStorage.setItem('dots-intro-solid-v1','1'); } catch {}
+    document.body.classList.add('intro-on');
+    for (const el of root.querySelectorAll('.intro-svg,.intro-tag,.intro-prog')) el.style.display = 'none';
+    root.style.background = 'var(--sand)';
+    canvas.style.cssText += ';box-sizing:border-box;inset:var(--in);width:calc(100% - 2 * var(--in));height:calc(100% - 2 * var(--in));border-radius:20px;box-shadow:inset 0 0 0 1px #ffffffaa,inset 0 2px 9px #ffffff66,0 4px 18px #352c2014;background:linear-gradient(135deg,#ffffff66,transparent 58%,#ffffff18)';
+    const colors = ['#D4AF37','#006E62','#791E23'];
+    const finalMark = new Path2D(mark.querySelector('path').getAttribute('d'));
+    const start = performance.now();
+    let last = -1, active = true;
+    $('#i-skip').onclick = () => { active = false; finish(); };
     function frame(now) {
-      t += Math.max(0, Math.min(0.05, (now - last) / 1000)) * SPEED; last = now;
-      const mob = W < 760, seg = (a, b) => cl((t - a) / (b - a)), sg = (r) => seg(r[0], r[1]);
-      const inset = Math.min(18, Math.max(10, W * 0.014)), rad = Math.min(32, Math.max(20, W * 0.024));
-      const S = mob ? Math.min(W * 0.46, H * 0.24) : Math.min(H * 0.26, 230);
-      const cx = W / 2, cy = mob ? H * 0.44 : H / 2, gx0 = cx - S / 2, gy0 = cy - S / 2;
-      B.fill(0); R.fill(0);
-      const tt = now / 1000;
-
-      /* 1 · the field: many dots, softly linked, drifting */
-      const fx0 = inset + 40, fy0 = inset + 60, fw = W - 2 * (inset + 40), fh = H - 2 * (inset + 60);
-      const fieldIn = RM ? 0 : oC(sg(T.field)), dim = RM ? 1 : oC(sg(T.dim));
-      const P = ALL.map((d) => [fx0 + d.u * fw + Math.sin(tt * 0.5 * d.sp + d.ph) * 7, fy0 + d.v * fh + Math.cos(tt * 0.42 * d.sp + d.ph) * 6]);
-      const fieldO = fieldIn * (1 - dim * 0.96);
-      fieldEls.forEach((c, i) => { if (i >= FIELD.length) { c.style.opacity = 0; return; } c.setAttribute('cx', f(P[i][0])); c.setAttribute('cy', f(P[i][1])); c.style.opacity = 0.65 * fieldO; });
-      const pick = RM ? 1 : oC(sg(T.pick));
-      PAIRS.forEach(([a, b], k) => {
-        const ln = linkEls[k], A = P[a], Bp = P[b], chosen = a >= FIELD.length || b >= FIELD.length;
-        ln.setAttribute('x1', f(A[0])); ln.setAttribute('y1', f(A[1])); ln.setAttribute('x2', f(Bp[0])); ln.setAttribute('y2', f(Bp[1]));
-        ln.style.opacity = (chosen ? mix(0.14, 0.4, pick) * (1 - seg(1.25, 1.6)) : 0.14 * (1 - dim)) * fieldIn;
-      });
-
-      /* 2 · the three: they light up, glide in, circle a soft light, then settle on the corners */
-      const corners = [[gx0, gy0], [gx0, gy0 + S], [gx0 + S, gy0 + S]];
-      const Ro = S * 0.44, dr = mob ? 3 : 3.5, fillP = RM ? 1 : oC(sg(T.fill)), rc = [0, 0, 0];
-      lanes.forEach((l, i) => {
-        const [tx, ty] = corners[i], ct = t - (T.cove + i * 0.12), cove = spring(ct, 9, 0.58);
-        rc[i] = RM ? 0.3 : 0.3 * cove;
-        if (RM || ct > 0.6) { l.dot.setAttribute('r', 0); l.halo.setAttribute('r', 0); drawTail(l, 0, 0); return; }
-        const [px, py] = P[FIELD.length + i];
-        const th0 = Math.atan2((py - cy) / 0.86, px - cx), g = t - T.glide;
-        const th = th0 + (g > 0 ? 3.0 * (1 - Math.exp(-0.9 * g)) : 0);
-        const ox = cx + Ro * Math.cos(th), oy = cy + Ro * Math.sin(th) * 0.86;
-        const k1 = spring(g, 3.2, 0.95), k2 = spring(t - T.toCorner - i * 0.09, 5.2, 0.85);
-        const x = mix(mix(px, ox, k1), tx, k2), y = mix(mix(py, oy, k1), ty, k2);
-        push(l, x, y);
-        drawTail(l, (g > 0 ? 1 : 0) * 0.85 * (1 - seg(3.0, 3.4)), mob ? 8 : 11);
-        const vis = fieldIn * (1 - cl(cove * 1.4));
-        l.dot.setAttribute('cx', f(x)); l.dot.setAttribute('cy', f(y)); l.dot.setAttribute('r', f(mix(1.3, dr, pick) * (1 - 0.5 * cl(cove)))); l.dot.style.opacity = vis;
-        l.halo.setAttribute('cx', f(x)); l.halo.setAttribute('cy', f(y)); l.halo.setAttribute('r', f((mob ? 15 : 20) * pick)); l.halo.style.opacity = vis * pick;
-        B.set([x, y, 46, 0.1 * vis * pick], i * 4);
-        if (ct > 0 && ct < 1.2) R.set([tx, ty, ct, 1.6 * (1 - ct / 1.2)], i * 4);
-      });
-      const orb = RM ? 0 : oC(sg(T.orb)) * (1 - sg(T.collapse));
-      B.set([cx, cy, mix(30, S * 0.9, orb), 0.3 * orb], 12);
-      const coreO = RM ? 0 : oC(seg(2.5, 2.75)) * (1 - fillP);
-      core.setAttribute('cx', cx); core.setAttribute('cy', cy); core.setAttribute('r', f(mix(2, 4.5, coreO))); core.style.opacity = coreO;
-
-      /* 3 · structure: axes and grid open from that point; the dots draw the square's edge; it fills flat */
-      const ax = RM ? 0 : oC(sg(T.axes)), gr = RM ? 0 : oC(sg(T.grid)), off = RM ? 1 : sg(T.off), span = Math.max(W, H);
-      axes[0].setAttribute('x1', f(cx - span * ax)); axes[0].setAttribute('x2', f(cx + span * ax)); axes[0].setAttribute('y1', cy); axes[0].setAttribute('y2', cy);
-      axes[1].setAttribute('y1', f(cy - span * ax)); axes[1].setAttribute('y2', f(cy + span * ax)); axes[1].setAttribute('x1', cx); axes[1].setAttribute('x2', cx);
-      $('#i-axes').style.opacity = (ax > 0 ? 1 : 0) * (1 - seg(3.3, 3.7));
-      const ext = S * 0.6 * gr;
-      for (let i = 0; i < 4; i++) {
-        const q = (i >> 1) + 1, v = i % 2 === 0, a = v ? gx0 + q * S / 3 : gy0 + q * S / 3, o = gOut[i], n = gIn[i];
-        if (v) { o.setAttribute('x1', a); o.setAttribute('x2', a); o.setAttribute('y1', f(cy - S / 2 * gr - ext)); o.setAttribute('y2', f(cy + S / 2 * gr + ext)); n.setAttribute('x1', a); n.setAttribute('x2', a); n.setAttribute('y1', gy0); n.setAttribute('y2', gy0 + S); }
-        else { o.setAttribute('y1', a); o.setAttribute('y2', a); o.setAttribute('x1', f(cx - S / 2 * gr - ext)); o.setAttribute('x2', f(cx + S / 2 * gr + ext)); n.setAttribute('y1', a); n.setAttribute('y2', a); n.setAttribute('x1', gx0); n.setAttribute('x2', gx0 + S); }
+      if (!active) return;
+      const t = (now-start)/1000, tick = Math.floor(t*30);
+      if (t >= 4.2) { finish(); return; }
+      requestAnimationFrame(frame);
+      if (tick === last) return;
+      last = tick;
+      const rect = canvas.getBoundingClientRect(), target = mark.getBoundingClientRect();
+      const w = rect.width, h = rect.height, dpi = Math.min(devicePixelRatio || 1,2);
+      if (canvas.width !== Math.round(w*dpi) || canvas.height !== Math.round(h*dpi)) {
+        canvas.width = Math.round(w*dpi); canvas.height = Math.round(h*dpi);
       }
-      $('#i-gridOut').style.opacity = (gr > 0 ? 1 : 0) * (1 - off);
-      $('#i-gridIn').style.opacity = fillP * (1 - off);
-      outline.setAttribute('d', `M${f(gx0)} ${f(gy0)}V${f(gy0 + S)}H${f(gx0 + S)}V${f(gy0)}Z`);
-      outline.setAttribute('stroke-dashoffset', f(1 - (RM ? 1 : ios(sg(T.outline)))));
-      outline.style.opacity = RM ? 0 : seg(T.outline[0], T.outline[0] + 0.05) * (1 - fillP);
-
-      /* 4 · lift-off: a calm rise on a soft arc, a small settle on landing; the glass answers with one ripple */
-      let size = S, x = cx, y = cy;
-      const ant = ios(seg(T.A0, T.L0)) * (1 - seg(T.L0, T.L0 + 0.2));
-      size *= 1 - 0.04 * ant;
-      // landing target: the logo chip in the site header
-      const mr = chipMark.getBoundingClientRect(), wr = chipWord.getBoundingClientRect();
-      const tcx = mr.left + mr.width / 2, tcy = mr.top + mr.height / 2, Ls = mr.width;
-      const u = RM ? 1 : seg(T.L0, T.L1);
-      if (u > 0) {
-        const g = RM ? 1 : spring((t - T.L0) * 1.05, 4.4, 0.9);         // eases out of rest, lands with a whisper of settle
-        const arc = Math.sin(Math.PI * cl(g)) * S * 0.18;                  // a gentle curve instead of a straight shot
-        const dx = tcx - cx, dy = tcy - cy, len = Math.hypot(dx, dy) || 1;
-        x = mix(cx, tcx, g) + (dy / len) * arc; y = mix(cy, tcy, g) - (dx / len) * arc;
-        size = mix(S, Ls, Math.pow(cl(g), 0.9));
+      ctx.setTransform(dpi,0,0,dpi,0,0);
+      ctx.clearRect(0,0,w,h);
+      const fly = smooth(2.65,3.75,t), base = Math.min(180,w*.31,h*.36);
+      const side = base+(target.width-base)*fly;
+      const x = (w-base)/2*(1-fly)+(target.left-rect.left)*fly;
+      const y = (h-base)/2*(1-fly)+(target.top-rect.top)*fly;
+      const corners = [[x,y],[x,y+side],[x+side,y+side]];
+      const arrivals = [1.56,1.72,1.88];
+      for (let i=0;i<3;i++) {
+        function point(time) {
+          const p = smooth(.4+i*.08,arrivals[i],time), angle = (1-p)*Math.PI/2;
+          return [corners[i][0]+(i===2?1:-1)*base*(.4*Math.sin(angle)+.6*Math.max(0,1-2*p)),corners[i][1]+(i===0?-1:1)*base*.4*(1-Math.cos(angle))];
+        }
+        const opacity = smooth(.22,.48,t)*(1-smooth(1.95,2.4,t));
+        ctx.strokeStyle = ctx.fillStyle = colors[i]; ctx.lineCap = 'round';
+        for (let k=20;k>0;k--) {
+          const strength = 1-k/21;
+          ctx.globalAlpha = opacity*strength*strength*.8; ctx.lineWidth = .25+1.6*strength;
+          ctx.beginPath(); ctx.moveTo(...point(t-k*.011)); ctx.lineTo(...point(t-(k-1)*.011)); ctx.stroke();
+        }
+        ctx.globalAlpha = opacity; ctx.beginPath(); ctx.arc(...point(t),1.3,0,Math.PI*2); ctx.fill();
       }
-      const launch = RM ? 1 : ios(seg(T.L0, T.L0 + 1.0)), bloom = RM ? 0 : Math.sin(Math.PI * seg(T.L0 - 0.1, T.L0 + 0.6));
-      if (!RM) { const lt = t - T.L0; if (lt > 0 && lt < 1.3) R.set([cx, cy, lt, 2.4 * (1 - lt / 1.3)], 8); const ft = t - T.fill[0]; if (ft > 0 && ft < 1.2 && lt <= 0) R.set([cx, cy, ft, 1.2 * (1 - ft / 1.2)], 8); }
-      const x0 = x - size / 2, y0 = y - size / 2, [rTL, rBL, rBR] = rc.map((v) => Math.max(0.01, v * size));
-      sym.setAttribute('d', `M${f(x0 + rTL)} ${f(y0)}H${f(x0 + size)}V${f(y0 + size - rBR)}A${f(rBR)} ${f(rBR)} 0 0 0 ${f(x0 + size - rBR)} ${f(y0 + size)}H${f(x0 + rBL)}A${f(rBL)} ${f(rBL)} 0 0 0 ${f(x0)} ${f(y0 + size - rBL)}V${f(y0 + rTL)}A${f(rTL)} ${f(rTL)} 0 0 0 ${f(x0 + rTL)} ${f(y0)}Z`);
-      sym.style.opacity = fillP;
-
-      if (U) {
-        L[0] += (Lt[0] - L[0]) * 0.04; L[1] += (Lt[1] - L[1]) * 0.04;
-        gl.uniform2f(U.uRes, W, H); gl.uniform1f(U.uDpr, dpr); gl.uniform1f(U.uT, tt);
-        gl.uniform1f(U.uLaunch, launch); gl.uniform1f(U.uRad, rad);
-        gl.uniform4f(U.uPane, inset, inset, W - inset * 2, H - inset * 2);
-        gl.uniform4f(U.uMark, x, y, size, (0.08 + 0.14 * bloom + 0.06 * launch) * fillP * (1 - 0.5 * seg(T.L1 - 0.4, T.L1 + 0.5)));
-        gl.uniform2f(U.uL, L[0], L[1]); gl.uniform4fv(U.uB, B); gl.uniform4fv(U.uR, R);
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      ctx.save(); ctx.globalAlpha = smooth(0,.6,t); ctx.fillStyle = '#006E62';
+      ctx.translate(x,y); ctx.scale(side/3,side/3);
+      if (t >= 2.22) ctx.fill(finalMark);
+      else {
+        const [a,b,c] = arrivals.map(v=>smooth(v-.11,v+.33,t));
+        const shape = new Path2D();
+        shape.moveTo(a,0); shape.lineTo(3,0); shape.lineTo(3,3-c);
+        shape.arc(3,3,c,-Math.PI/2,-Math.PI,true); shape.lineTo(b,3);
+        shape.arc(0,3,b,0,-Math.PI/2,true); shape.lineTo(0,a);
+        shape.arc(0,0,a,Math.PI/2,0,true); shape.closePath(); ctx.fill(shape);
       }
-
-      const fade = 1 - cl((t - T.END) / 0.6);
-      word.setAttribute('x', wr.right); word.setAttribute('y', wr.top + wr.height * 0.78); word.style.fontSize = getComputedStyle(chipWord).fontSize;
-      word.style.opacity = (RM ? 1 : oC(sg(T.word))) * fade * (wr.width ? 1 : 0);
-      const tagO = RM ? 0 : cl(t / 0.4) * (1 - seg(T.L1 - 0.6, T.L1 - 0.2));
-      $('#i-stageTag').textContent = t < T.collapse[0] ? '۰۱ · سه نقطه' : t < T.A0 ? '۰۲ · ساختار' : '۰۳ · پرتاب';
-      $('#i-stageTag').style.opacity = $('#i-cityTag').style.opacity = $('#i-prog').style.opacity = tagO;
-      [[0, T.collapse[0]], [T.collapse[0], T.A0], [T.A0, T.L1 - 0.3]].forEach((q, i) => { prog[i].style.width = cl((t - q[0]) / (q[1] - q[0])) * 100 + '%'; });
-      skip.style.opacity = t < T.L1 ? 1 : 0;
-      root.style.opacity = fade;
-      root.style.pointerEvents = t > T.END ? 'none' : 'auto';
-      if (t > T.END) document.body.classList.remove('intro-on');
-      if (t < T.END + 0.65) requestAnimationFrame(frame);
-      else { removeEventListener('pointermove', onMove); removeEventListener('resize', resize); end(); }
+      ctx.restore(); root.style.opacity = 1-smooth(3.75,4.2,t);
+      if (t>=3.75) document.body.classList.remove('intro-on');
     }
     requestAnimationFrame(frame);
   }
