@@ -1036,14 +1036,6 @@ body.intro-on .top{opacity:0}
 .resume-provider ul{margin:0;padding:0;padding-inline-start:calc(66px + 1em);list-style:disc outside;color:var(--ink);font-size:.94rem;line-height:1.8}
 .resume-provider ul > li::marker{color:var(--green)}
 .resume-provider ul li+li{margin-block-start:4px}
-.resume-trait-list{list-style:none;margin:0;padding:0;display:grid}
-.resume-trait-list li{display:grid;gap:6px;--skill-level:60%;padding:7px 0;border-block-end:1px solid var(--line);font-size:.94rem;line-height:1.6}
-.resume-trait-list li::after{content:"";display:block;block-size:24px;background:
-  linear-gradient(to left,var(--green),var(--green)) right center/var(--skill-level) 4px no-repeat,
-  linear-gradient(to left,rgba(20,22,21,.06) 1px,transparent 1px) right top/8px 8px,
-  linear-gradient(rgba(20,22,21,.06) 1px,transparent 1px) right top/8px 8px}
-.resume-technical h5{margin:16px 0 8px;color:var(--ink);font-size:.95rem}
-.resume-trait-list li:last-child{border-block-end:0}
 .resume-technical{grid-column:1 / -1}
 .resume-abilities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
 .resume-abilities div{display:grid;grid-template-rows:1fr auto;gap:6px;min-inline-size:0;padding:10px 12px;background:var(--sand);border:1px solid var(--line);border-radius:10px}
@@ -1199,13 +1191,15 @@ body.intro-on .top{opacity:0}
 
           <section class="resume-traits" aria-labelledby="resume-traits">
             <h4 id="resume-traits">مهارت‌های نرم</h4>
-            <ul class="resume-trait-list" role="list">
-              <li>تفکر خلاق</li>
-              <li>تفکر سیستمی</li>
-              <li>تفکر فرصت‌جویی</li>
-              <li>تفکر آینده‌پژوهی</li>
-              <li>تفکر سیستم‌سازی</li>
-            </ul>
+            <div class="rsheet">
+              <ul class="rs-rows" role="list">
+                <li class="rs-row" style="--b:60%"><div class="rs-name"><b>تفکر خلاق</b></div><div class="rs-plot" aria-hidden="true"><i class="rs-b1"></i></div></li>
+                <li class="rs-row" style="--b:60%"><div class="rs-name"><b>تفکر سیستمی</b></div><div class="rs-plot" aria-hidden="true"><i class="rs-b1"></i></div></li>
+                <li class="rs-row" style="--b:60%"><div class="rs-name"><b>تفکر فرصت‌جویی</b></div><div class="rs-plot" aria-hidden="true"><i class="rs-b1"></i></div></li>
+                <li class="rs-row" style="--b:60%"><div class="rs-name"><b>تفکر آینده‌پژوهی</b></div><div class="rs-plot" aria-hidden="true"><i class="rs-b1"></i></div></li>
+                <li class="rs-row" style="--b:60%"><div class="rs-name"><b>تفکر سیستم‌سازی</b></div><div class="rs-plot" aria-hidden="true"><i class="rs-b1"></i></div></li>
+              </ul>
+            </div>
           </section>
 
           <section class="resume-technical" aria-labelledby="resume-technical">
@@ -1220,6 +1214,10 @@ body.intro-on .top{opacity:0}
               <li dir="ltr">Google Search Console</li>
               <li dir="ltr">Google Analytics</li>
               <li dir="ltr">Microsoft Clarity</li>
+              <li dir="ltr">KWFinder</li>
+              <li dir="ltr">Semrush</li>
+              <li dir="ltr">Ahrefs</li>
+              <li dir="ltr">Crazy Egg</li>
             </ul>
             <h5>آشنایی با نرم‌افزارها</h5>
             <ul class="resume-tools" role="list" lang="en">
