@@ -999,6 +999,24 @@ body.intro-on .top{opacity:0}
 .map-legend .lg-on{background:#83f3d7;box-shadow:none}
 .map-legend .lg-done{background:#9cb8ec}
 .map-legend .lg-out{background:#ffc975;box-shadow:none}
+/* Quiet surfaces for the approach page */
+.lab,.contact{background:#182321}
+.lab .mpanel{background:#22302d;border:1px solid #41534e;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.lab .mpanel::before{display:none}
+.lab .mmap{background:#141f1d;border:1px solid #465952}
+.lab .mpanel .seg{background:#172320;box-shadow:none}
+.lab .mpanel .seg-thumb{background:#254139;box-shadow:none;transition:right .2s ease-out}
+.lab .mpanel .seg-btn:hover{text-shadow:none}
+.lab .mpanel .ph{background:#263631}
+.lab .mpanel .ph.on{background:#2a4038;box-shadow:inset 0 0 0 1px #71c6b1}
+.lab .mpanel .ph:not(.on) .ph-tools{opacity:1}
+.lab .mpanel .tool.on i,.lab .mpanel .ph-head.on::after,.lab .mpanel .tool.done i{box-shadow:none;scale:1}
+.lab .mdetail,.lab .gp-foot{background:#182522;box-shadow:none;border:1px solid #40564e}
+.lab .gp-foot:focus-within{border-color:#83f3d7}
+.vbody .vcta{background:#1c312b}
+.vbody .vcta .btn-primary{background:#a5efdb;border-color:#a5efdb;color:#152b24}
+.vbody .vcta .btn-primary:hover{background:#c2f9ea;border-color:#c2f9ea}
+@media (prefers-reduced-motion:reduce){.lab .mpanel .seg-thumb{transition:none}}
 </style>
 </head>
 <body>
@@ -1459,11 +1477,10 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
       box.appendChild(d); return d;
     });
 
-    let seg = 0, tool = 0, wave = 0, waveF = 0, user = false, t = 0, last = performance.now(), hover = null, dtG = 0, G = null;
+    let seg = 0, tool = 0, wave = 0, waveF = 0, t = 0, last = performance.now(), hover = null, dtG = 0, G = null;
     const targetF = () => PF[seg] + (PF[seg + 1] - PF[seg]) * (tool + 1) / LEN[seg];
     const focusPhase = (smooth) => { if (!G || mapEl.scrollWidth <= mapEl.clientWidth + 2) return; mapEl.scrollTo({ left: G.X(DF[seg]) - mapEl.clientWidth / 2, behavior: smooth && !RM ? 'smooth' : 'auto' }); };
     const set = (s, k = 0, byUser = false) => {
-      if (byUser) user = true;
       const ch = s !== seg; if (ch) wave = 0;
       seg = s; tool = k;
       segEl.style.setProperty('--s', s);
@@ -1515,7 +1532,7 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
       wave = RM ? tool : wave + Math.sign(tool - wave) * Math.min(Math.abs(tool - wave), dt * 3.5);
       const tf = targetF(); waveF = RM ? tf : waveF + Math.sign(tf - waveF) * Math.min(Math.abs(tf - waveF), dt * 260);
       const px = ptr.x - rect.left, py = ptr.y - rect.top, inside = ptr.on && px >= 0 && py >= 0 && px <= W && py <= H && !RM;
-      const pull = (x, y, R, s) => { if (!inside) return [0, 0]; const dx = px - x, dy = py - y, d = Math.hypot(dx, dy); if (d >= R) return [0, 0]; const q = Math.pow(1 - d / R, 1.6) * s; return [dx * q, dy * q]; };
+      const pull = (x, y, R, s) => { if (!inside) return [0, 0]; const dx = px - x, dy = py - y, d = Math.hypot(dx, dy); if (d >= R) return [0, 0]; const q = Math.pow(1 - d / R, 1.6) * s * 0.22; return [dx * q, dy * q]; };
       const selSup = sup.find((n) => n.s === seg && n.k === tool);
 
       /* light levels */
@@ -1540,7 +1557,7 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
           const second = waveF > DF[s]; ctx.beginPath();
           if (!second) { ctx.moveTo(x0, y0); ctx.lineTo(xm, yt); ctx.lineTo(xm, yb); } else { ctx.moveTo(xm, yt); ctx.lineTo(x1, y0); ctx.lineTo(xm, yb); }
           ctx.closePath(); ctx.fillStyle = 'rgba(54,224,200,.07)'; ctx.fill();
-          ctx.save(); poly(); ctx.clip(); glow(ctx, xm, y0, HH[s] * k * 1.8, '54,224,200', 0.16 * L.lit); ctx.restore();
+          ctx.save(); poly(); ctx.clip(); glow(ctx, xm, y0, HH[s] * k * 1.8, '54,224,200', 0.07 * L.lit); ctx.restore();
         }
         poly(); ctx.strokeStyle = s === seg ? "rgba(131,243,215,.8)" : s < seg ? "rgba(156,184,236,.64)" : "rgba(249,245,236,.32)"; ctx.lineWidth = s === seg ? 1.6 : 1; ctx.stroke();
         ctx.setLineDash([1, 4]); ctx.beginPath(); ctx.moveTo(xm, yt); ctx.lineTo(xm, yb); ctx.strokeStyle = `rgba(249,245,236,${0.25 + 0.3 * L.lit})`; ctx.stroke(); ctx.setLineDash([]);
@@ -1553,11 +1570,6 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
             line(); ctx.strokeStyle = `rgba(${color},.22)`; ctx.lineWidth = 4; ctx.stroke();
             line(); ctx.strokeStyle = `rgba(${color},.85)`; ctx.lineWidth = 1.4; ctx.stroke();
           });
-        }
-        // the light front and two comets travelling the active diamond (one over the top, one under)
-        if (s === seg && !RM) {
-          const span = PF[s + 1] - PF[s], per = 2.6 + span / 260;
-          [0, 0.5].forEach((o, j) => { const q = ((t / per) + o) % 1, f = PF[s] + span * q, c = edgeC(s, f, j ? 1 : -1); glow(ctx, X(f), Y(c), 9, '249,245,236', 0.7 * Math.sin(Math.PI * q)); });
         }
       });
 
@@ -1576,13 +1588,13 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
         ctx.beginPath(); ctx.arc(x, y, 1.3 + 0.6 * d.lit, 0, 7); ctx.fill();
         if (d.f <= waveF) head = [x, y];
       });
-      if (head && !RM) glow(ctx, head[0], head[1], 16, '54,224,200', 0.5);
+      if (head && !RM) glow(ctx, head[0], head[1], 12, '54,224,200', 0.23);
 
       /* key points: start (cream), outputs (wine) */
       MS.forEach((m, i) => {
         const x = X(m.f), y = Y(m.c), selMs = i > 0 && ((i - 1 === seg && tool === LEN[seg] - 1) || (i === 3 && seg === 2 && tool === LEN[2] - 1));
         if (i === 0) { ctx.fillStyle = '#F9F5EC'; ctx.beginPath(); ctx.arc(x, y, 4.5, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(249,245,236,.4)'; ctx.beginPath(); ctx.arc(x, y, 10, 0, 7); ctx.stroke(); return; }
-        glow(ctx, x, y, i === 3 ? 34 : 26, i === 3 ? '54,224,200' : '240,169,156', 0.45 * m.lit);
+        glow(ctx, x, y, i === 3 ? 34 : 26, i === 3 ? '54,224,200' : '255,201,117', 0.2 * m.lit);
         ctx.fillStyle = `rgba(255,201,117,${0.65 + 0.35 * m.lit})`; ctx.beginPath(); ctx.arc(x, y, 6.5, 0, 7); ctx.fill();
         ctx.strokeStyle = `rgba(249,245,236,${0.4 + 0.6 * m.lit})`; ctx.lineWidth = 1.3; ctx.stroke();
         ctx.fillStyle = `rgba(249,245,236,${0.35 + 0.65 * m.lit})`; ctx.beginPath(); ctx.arc(x, y, 2, 0, 7); ctx.fill();
@@ -1613,7 +1625,7 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
       sup.forEach((n) => {
         const isSel = n === selSup, a = n.lit;
         if (n.out) {
-          glow(ctx, n.x, n.y, 26, '240,169,156', 0.38 * a);
+          glow(ctx, n.x, n.y, 18, '255,201,117', 0.19 * a);
           ctx.fillStyle = `rgba(255,201,117,${0.65 + 0.35 * a})`; ctx.beginPath(); ctx.arc(n.x, n.y, 6.5, 0, 7); ctx.fill();
           ctx.strokeStyle = `rgba(249,245,236,${0.35 + 0.65 * a})`; ctx.lineWidth = 1.3; ctx.stroke();
         } else {
@@ -1675,14 +1687,11 @@ html.dx-on [data-k].dx-changed{outline-color:#791E23}`;
     cv.addEventListener('click', (e) => { const h2 = pick(e); if (h2) set(h2.s, h2.k, true); });
 
     ioObs.observe(cv);
-    let inView = false;
-    new IntersectionObserver((es) => es.forEach((e) => { inView = e.isIntersecting; }), { threshold: 0.4 }).observe(cv);
     set(0, 0); requestAnimationFrame(() => focusPhase(false));
     if (!RM) {
       let mPaused = false; const mpb = document.getElementById('mPause');
       if (mpb) mpb.addEventListener('click', () => { mPaused = !mPaused; mpb.setAttribute('aria-pressed', mPaused); mpb.setAttribute('aria-label', mPaused ? 'ادامه‌ی حرکت نقشه' : 'توقف حرکت نقشه'); mpb.querySelector('path').setAttribute('d', mPaused ? 'M3 2l9 5-9 5z' : 'M3 2h3v10H3zM8 2h3v10H8z'); });
       (function loop(now) { dtG = Math.max(0, Math.min(0.05, (now - last) / 1000)); last = now; requestAnimationFrame(loop); if (visible.get(cv) === false) return; if (!mPaused) t += dtG; draw(); })(last);
-      setInterval(() => { if (inView && !user && !mPaused && document.visibilityState === 'visible') step(1, false); }, 3200);
     }
   }
 
